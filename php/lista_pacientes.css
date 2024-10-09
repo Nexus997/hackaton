@@ -1,0 +1,153 @@
+/* lista_pacientes.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e3fff5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #333;
+    margin: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    background-color: #007bff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+a:hover {
+    background-color: #0056b3;
+}
+
+input[type="text"], select {
+    padding: 8px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    word-wrap: break-word;
+    max-width: 200px;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+button {
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+#nomeBusca, #generoBusca, #idadeBusca, #statusBusca {
+    margin-bottom: 20px;
+}
+
+/* Estilo para a seção de filtros */
+.filtros-container {
+    display: flex;
+   /* justify-content: space-between;*/
+    flex-wrap: wrap;
+   
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filtros-container input,
+.filtros-container select {
+   /* flex: 1;*/
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+        
+}
+
+.filtros-container select {
+    min-width: 150px;
+}
+
+.filtros-container input {
+    min-width: 200px;
+}
+
+.filtros-container input::placeholder {
+    color: #999;
+}
+
+/* Centralizar o título */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+/* Estilo para a navegação */
+nav {
+    width: 100%;
+    justify-content: center;
+    gap: 20px; /* Espaçamento entre os botões */
+    margin-bottom: 20px; /* Espaço entre a navegação e o conteúdo */
+}
+
+/* Estilo dos links que parecem botões */
+nav a {
+    text-decoration: none; /* Remove o sublinhado */
+    color: white; /* Cor do texto */
+    background-color: #007bff; /* Cor de fundo (azul) */
+    padding: 10px 20px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease; /* Transição suave para hover */
+    font-weight: bold; /* Negrito para destacar */
+    display: inline-block; /* Para comportar o padding corretamente */
+}
+
+/* Efeito hover para os botões */
+nav a:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+

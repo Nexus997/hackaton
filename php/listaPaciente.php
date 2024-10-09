@@ -13,12 +13,14 @@ $result = mysqli_query($conn, $sql);
 <head>
     <meta charset="UTF-8">
     <title>Lista de Pacientes</title>
+    <link rel="stylesheet" href="lista_pacientes.css"> <!-- Link para o CSS externo -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-<a href="inicio.php">Voltar</a>
-<a href="cadastroPaciente.php">Cadastrar Paciente</a>
+<nav>
+    <a href="inicio.php">Voltar</a>
+</nav>
 
 <style>
     td {
@@ -30,36 +32,40 @@ $result = mysqli_query($conn, $sql);
 
 <h1>Lista de Pacientes</h1>
 
-<!-- Filtro por nome -->
-<input type="text" id="nomeBusca" placeholder="Buscar por nome..." onkeyup="buscarPacientes()">
+<div class="filtros-container">
+    <!-- Filtro por nome -->
+    <input type="text" id="nomeBusca" placeholder="Buscar por nome..." onkeyup="buscarPacientes()">
 
-<!-- Filtro por gênero -->
-<select id="generoBusca" onchange="buscarPacientes()">
-    <option value="">Filtrar por gênero</option>
-    <option value="M">Masculino</option>
-    <option value="F">Feminino</option>
-</select>
+    <!-- Filtro por gênero -->
+    <select id="generoBusca" onchange="buscarPacientes()">
+        <option value="">Filtrar por gênero</option>
+        <option value="M">Masculino</option>
+        <option value="F">Feminino</option>
+    </select>
 
-<!-- Filtro por faixa etária -->
-<select id="idadeBusca" onchange="buscarPacientes()">
-    <option value="" disabled selected hidden>Filtrar por faixa etária</option>
-    <option value="menor18">Menor de 18</option>
-    <option value="18-25">18 - 25</option>
-    <option value="26-40">26 - 40</option>
-    <option value="41-65">41 - 65</option>
-    <option value="acima65">Acima de 65</option>
-</select>
-<!-- Filtro por status trabalhista -->
-<select id="statusBusca" onchange="buscarPacientes()">
-    <option value="">Filtrar por status trabalhista</option>
-    <option value="empregado">Empregado</option>
-    <option value="autonomo">Autônomo</option>
-    <option value="desempregado">Desempregado</option>
-    <option value="estagiario">Estagiário</option>
-    <option value="aposentado">Aposentado</option>
-    <option value="pensionista">Pensionista</option>
-    <option value="licenca">Licença</option>
-</select>
+    <!-- Filtro por faixa etária -->
+    <select id="idadeBusca" onchange="buscarPacientes()">
+        <option value="" disabled selected hidden>Filtrar por faixa etária</option>
+        <option value="menor18">Menor de 18</option>
+        <option value="18-25">18 - 25</option>
+        <option value="26-40">26 - 40</option>
+        <option value="41-65">41 - 65</option>
+        <option value="acima65">Acima de 65</option>
+    </select>
+
+    <!-- Filtro por status trabalhista -->
+    <select id="statusBusca" onchange="buscarPacientes()">
+        <option value="">Filtrar por status trabalhista</option>
+        <option value="empregado">Empregado</option>
+        <option value="autonomo">Autônomo</option>
+        <option value="desempregado">Desempregado</option>
+        <option value="estagiario">Estagiário</option>
+        <option value="aposentado">Aposentado</option>
+        <option value="pensionista">Pensionista</option>
+        <option value="licenca">Licença</option>
+    </select>
+        <a class="cadastroPaciente"href="cadastroPaciente.php">Cadastrar Paciente</a>
+</div>
 
 <div id="resultados">
     <?php
