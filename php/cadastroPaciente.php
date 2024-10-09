@@ -27,13 +27,13 @@
     <label for="statusTrabalhista">Situação trabalhista:</label>
     <select name="statusTrabalhista" id="statusTrabalhista">
         <option value="" disabled selected hidden>Selecione a situação trabalhista</option>
-        <option value="empregado">Empregado</option>
-        <option value="autonomo">Autônomo</option>
-        <option value="desempregado">Desempregado</option>
-        <option value="estagiario">Estagiário</option>
-        <option value="aposentado">Aposentado</option>
-        <option value="pensionista">Pensionista</option>
-        <option value="licenca">Licença</option>
+        <option value="Empregado">Empregado</option>
+        <option value="Autônomo">Autônomo</option>
+        <option value="Desempregado">Desempregado</option>
+        <option value="Estagiário">Estagiário</option>
+        <option value="Aposentado">Aposentado</option>
+        <option value="Pensionista">Pensionista</option>
+        <option value="Licença">Licença</option>
     </select>
 
     <label for="contatoPaciente">Contato:</label>

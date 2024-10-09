@@ -72,35 +72,11 @@ if (mysqli_num_rows($result) > 0) {
         $genero = $row['generoPaciente'] === 'M' ? 'Masculino' : 'Feminino';
 
         // Formata o status trabalhista
-        switch ($row['statusTrabalho']) {
-            case 'empregado':
-                $statusTrabalhista = 'Empregado';
-                break;
-            case 'autonomo':
-                $statusTrabalhista = 'Autônomo';
-                break;
-            case 'desempregado':
-                $statusTrabalhista = 'Desempregado';
-                break;
-            case 'estagiario':
-                $statusTrabalhista = 'Estagiário';
-                break;
-            case 'aposentado':
-                $statusTrabalhista = 'Aposentado';
-                break;
-            case 'pensionista':
-                $statusTrabalhista = 'Pensionista';
-                break;
-            case 'licenca':
-                $statusTrabalhista = 'Licença';
-                break;
-            default:
-                $statusTrabalhista = 'Não especificado';
-                break;
-        }
+        $statusTrabalho = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especifcado';
+
 
         echo "<tr>
-                <td>{$row['nomePaciente']}</td>
+                <td>{$row['nomePaciente']}</td>  
                 <td>{$row['dataNasc']}</td>
                 <td>{$row['bairro']}</td>
                 <td>$genero</td>
