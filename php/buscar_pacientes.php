@@ -72,7 +72,7 @@ if (mysqli_num_rows($result) > 0) {
         $genero = $row['generoPaciente'] === 'M' ? 'Masculino' : 'Feminino';
 
         // Formata o status trabalhista
-        $statusTrabalho = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especifcado';
+        $statusTrabalhista = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especifcado';
 
 
         echo "<tr>
