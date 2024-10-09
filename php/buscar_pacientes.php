@@ -7,7 +7,7 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro 
 // Verifica os parâmetros de pesquisa
 $nomeBusca = isset($_POST['nomeBusca']) ? $_POST['nomeBusca'] : '';
 $generoBusca = isset($_POST['generoBusca']) ? $_POST['generoBusca'] : '';
-$dataNascBusca = isset($_POST['dataNascBusca']) ? $_POST['dataNascBusca'] : '';
+$idadeBusca = isset($_POST['idadeBusca']) ? $_POST['idadeBusca'] : '';
 $statusBusca = isset($_POST['statusBusca']) ? $_POST['statusBusca'] : '';
 
 // Monta a consulta SQL com filtros
@@ -29,11 +29,18 @@ if ($generoBusca) {
     $types .= 's';
 }
 
-// Filtro por data de nascimento
-if ($dataNascBusca) {
-    $sql .= " AND dataNasc = ?";
-    $params[] = $dataNascBusca;
-    $types .= 's';
+if ($idadeBusca) {
+    if ($idadeBusca === 'menor18') {
+        $sql .= " AND idade < 18";
+    } elseif ($idadeBusca === '18-25') {
+        $sql .= " AND idade BETWEEN 18 AND 25";
+    } elseif ($idadeBusca === '26-40') {
+        $sql .= " AND idade BETWEEN 26 AND 40";
+    } elseif ($idadeBusca === '41-65') {
+        $sql .= " AND idade BETWEEN 41 AND 65";
+    } elseif ($idadeBusca === 'acima65') {
+        $sql .= " AND idade > 65";
+    }
 }
 
 // Filtro por status trabalhista

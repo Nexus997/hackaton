@@ -42,7 +42,8 @@ $result = mysqli_query($conn, $sql);
 
 <!-- Filtro por faixa etária -->
 <select id="idadeBusca" onchange="buscarPacientes()">
-    <option value="">Idade</option>
+    <option value="" disabled selected hidden>Filtrar por faixa etária</option>
+    <option value="menor18">Menor de 18</option>
     <option value="18-25">18 - 25</option>
     <option value="26-40">26 - 40</option>
     <option value="41-65">41 - 65</option>
