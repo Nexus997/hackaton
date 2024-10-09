@@ -62,6 +62,7 @@ $result = mysqli_query($conn, $sql);
                 <tr>
                     <th>Nome</th>
                     <th>Data de Nascimento</th>
+                    <th>Idade</th>
                     <th>Bairro</th>
                     <th>Gênero</th>
                     <th>Status Trabalhista</th>
@@ -76,36 +77,12 @@ $result = mysqli_query($conn, $sql);
             $genero = $row['generoPaciente'] === 'M' ? 'Masculino' : 'Feminino';
             
             // Formata o status trabalhista
-            switch ($row['statusTrabalho']) {
-                case 'empregado':
-                    $statusTrabalhista = 'Empregado';
-                    break;
-                case 'autonomo':
-                    $statusTrabalhista = 'Autônomo';
-                    break;
-                case 'desempregado':
-                    $statusTrabalhista = 'Desempregado';
-                    break;
-                case 'estagiario':
-                    $statusTrabalhista = 'Estagiário';
-                    break;
-                case 'aposentado':
-                    $statusTrabalhista = 'Aposentado';
-                    break;
-                case 'pensionista':
-                    $statusTrabalhista = 'Pensionista';
-                    break;
-                case 'licenca':
-                    $statusTrabalhista = 'Licença';
-                    break;
-                default:
-                    $statusTrabalhista = 'Não especificado';
-                    break;
-            }
+            $statusTrabalhista = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especifcado';
 
             echo "<tr>
                     <td>{$row['nomePaciente']}</td>
                     <td>{$row['dataNasc']}</td>
+                    <td>{$row['idade']}</td>
                     <td>{$row['bairro']}</td>
                     <td>$genero</td>
                     <td>$statusTrabalhista</td>

@@ -58,6 +58,7 @@ if (mysqli_num_rows($result) > 0) {
             <tr>
                 <th>Nome</th>
                 <th>Data de Nascimento</th>
+                <th>Idade</th>
                 <th>Bairro</th>
                 <th>Gênero</th>
                 <th>Status Trabalhista</th>
@@ -72,12 +73,13 @@ if (mysqli_num_rows($result) > 0) {
         $genero = $row['generoPaciente'] === 'M' ? 'Masculino' : 'Feminino';
 
         // Formata o status trabalhista
-        $statusTrabalho = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especifcado';
+        $statusTrabalhista = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especifcado';
 
 
         echo "<tr>
                 <td>{$row['nomePaciente']}</td>  
                 <td>{$row['dataNasc']}</td>
+                <td>{$row['idade']}</td>
                 <td>{$row['bairro']}</td>
                 <td>$genero</td>
                 <td>$statusTrabalhista</td>

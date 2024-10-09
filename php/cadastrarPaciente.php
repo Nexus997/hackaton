@@ -6,6 +6,8 @@
     <title>Document</title>
 </head>
 <body>
+
+
     
 <?php 
 if ($_SERVER["REQUEST_METHOD"] != "POST") {
@@ -29,10 +31,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $documentoPaciente = $_POST['documentoPaciente'];
     $observacoesPaciente = $_POST['observacoesPaciente'];
 
- 
+    function calcularIdade($dataNascimento) {
+        $dataNascimento = new DateTime($dataNascimento);
+        $hoje = new DateTime();
+        return $hoje->diff($dataNascimento)->y;
+    }
+
+    $idade = calcularIdade($dataNasc);
+
     $sql = "INSERT INTO paciente (
         nomePaciente, 
         dataNasc, 
+        idade, 
         bairro, 
         generoPaciente, 
         statusTrabalho, 
@@ -40,30 +50,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         documentoPaciente, 
         observacaoPaciente
     ) VALUES (
-        ?, ?, ?, ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?, ?, ?, ?
     )";
-
 
     $stmt = mysqli_prepare($conn, $sql);
     
-
-    mysqli_stmt_bind_param($stmt, 'ssssssss', $nomePaciente, $dataNasc, $bairro, $generoPaciente, $statusTrabalhista, $contatoPaciente, $documentoPaciente, $observacoesPaciente);
-
+    // Adicione a idade ao binding dos parâmetros
+    mysqli_stmt_bind_param($stmt, 'sssssssss', $nomePaciente, $dataNasc, $idade, $bairro, $generoPaciente, $statusTrabalhista, $contatoPaciente, $documentoPaciente, $observacoesPaciente);
 
     if (mysqli_stmt_execute($stmt)) {
         echo "Paciente cadastrado com sucesso!";
-        
     } else {
         echo "Erro ao cadastrar paciente: " . mysqli_error($conn);
     }
-
 
     mysqli_stmt_close($stmt);
 }
 
 $conn->close();
-
-
 ?>
 
 <a href="listaPaciente.php">Ir à lista de pacientes</a>
