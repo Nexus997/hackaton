@@ -4,20 +4,53 @@ require_once('conn.php');
 
 $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro ao conectar ao banco de dados');
 
-// Verifica se foi enviado um nome para pesquisa
+// Verifica os parâmetros de pesquisa
 $nomeBusca = isset($_POST['nomeBusca']) ? $_POST['nomeBusca'] : '';
+$generoBusca = isset($_POST['generoBusca']) ? $_POST['generoBusca'] : '';
+$dataNascBusca = isset($_POST['dataNascBusca']) ? $_POST['dataNascBusca'] : '';
+$statusBusca = isset($_POST['statusBusca']) ? $_POST['statusBusca'] : '';
 
-// Consulta para obter os pacientes filtrados pelo nome
+// Monta a consulta SQL com filtros
+$sql = "SELECT * FROM paciente WHERE 1=1";
+$params = [];
+$types = '';
+
+// Filtro por nome
 if ($nomeBusca) {
-    $sql = "SELECT * FROM paciente WHERE nomePaciente LIKE ? COLLATE utf8mb4_general_ci";
+    $sql .= " AND nomePaciente LIKE ?";
+    $params[] = "%$nomeBusca%";
+    $types .= 's';
+}
+
+// Filtro por gênero
+if ($generoBusca) {
+    $sql .= " AND generoPaciente = ?";
+    $params[] = $generoBusca;
+    $types .= 's';
+}
+
+// Filtro por data de nascimento
+if ($dataNascBusca) {
+    $sql .= " AND dataNasc = ?";
+    $params[] = $dataNascBusca;
+    $types .= 's';
+}
+
+// Filtro por status trabalhista
+if ($statusBusca) {
+    $sql .= " AND statusTrabalho = ?";
+    $params[] = $statusBusca;
+    $types .= 's';
+}
+
+// Prepara a consulta apenas se houver filtros
+if (count($params) > 0) {
     $stmt = mysqli_prepare($conn, $sql);
-    $param = "%$nomeBusca%";
-    mysqli_stmt_bind_param($stmt, 's', $param);
+    mysqli_stmt_bind_param($stmt, $types, ...$params);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 } else {
-    $sql = "SELECT * FROM paciente";
-    $result = mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql);  // Se não houver filtros, executa normalmente
 }
 
 if (mysqli_num_rows($result) > 0) {
@@ -37,7 +70,7 @@ if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         // Verifica e formata o gênero
         $genero = $row['generoPaciente'] === 'M' ? 'Masculino' : 'Feminino';
-        
+
         // Formata o status trabalhista
         switch ($row['statusTrabalho']) {
             case 'empregado':
