@@ -40,9 +40,14 @@ $result = mysqli_query($conn, $sql);
     <option value="F">Feminino</option>
 </select>
 
-<!-- Filtro por data de nascimento -->
-<input type="date" id="dataNascBusca" onchange="buscarPacientes()" placeholder="Buscar por data de nascimento">
-
+<!-- Filtro por faixa etária -->
+<select id="idadeBusca" onchange="buscarPacientes()">
+    <option value="">Idade</option>
+    <option value="18-25">18 - 25</option>
+    <option value="26-40">26 - 40</option>
+    <option value="41-65">41 - 65</option>
+    <option value="acima65">Acima de 65</option>
+</select>
 <!-- Filtro por status trabalhista -->
 <select id="statusBusca" onchange="buscarPacientes()">
     <option value="">Filtrar por status trabalhista</option>
@@ -107,26 +112,27 @@ $result = mysqli_query($conn, $sql);
 </div>
 
 <script>
-    function buscarPacientes() {
-        var nomeBusca = $("#nomeBusca").val();
-        var generoBusca = $("#generoBusca").val();
-        var dataNascBusca = $("#dataNascBusca").val();
-        var statusBusca = $("#statusBusca").val();
 
-        $.ajax({
-            url: 'buscar_pacientes.php',
-            type: 'POST',
-            data: { 
-                nomeBusca: nomeBusca, 
-                generoBusca: generoBusca, 
-                dataNascBusca: dataNascBusca, 
-                statusBusca: statusBusca 
-            },
-            success: function(response) {
-                $("#resultados").html(response);
-            }
-        });
-    }
+    function buscarPacientes() {
+    var nomeBusca = $("#nomeBusca").val();
+    var generoBusca = $("#generoBusca").val();
+    var idadeBusca = $("#idadeBusca").val(); // Nova variável para a faixa etária
+    var statusBusca = $("#statusBusca").val();
+
+    $.ajax({
+        url: 'buscar_pacientes.php',
+        type: 'POST',
+        data: { 
+            nomeBusca: nomeBusca, 
+            generoBusca: generoBusca, 
+            idadeBusca: idadeBusca, // Envio da faixa etária
+            statusBusca: statusBusca 
+        },
+        success: function(response) {
+            $("#resultados").html(response);
+        }
+    });
+}
 </script>
 
 </body>
