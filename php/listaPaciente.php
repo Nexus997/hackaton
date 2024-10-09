@@ -1,4 +1,4 @@
-<?php
+<?php 
 // Configurações de conexão
 require_once('conn.php');
 
@@ -18,18 +18,42 @@ $result = mysqli_query($conn, $sql);
 
 <body>
 <a href="inicio.php">Voltar</a>
-<a href="cadastroPaciente.php">Cadastrar P</a>
+<a href="cadastroPaciente.php">Cadastrar Paciente</a>
+
 <style>
     td {
         max-width: 250px;  /* Largura máxima */
         overflow-wrap: break-word;  /* Quebra de palavras */
         white-space: normal;  /* Permite múltiplas linhas */
     }
-    
 </style>
 
 <h1>Lista de Pacientes</h1>
+
+<!-- Filtro por nome -->
 <input type="text" id="nomeBusca" placeholder="Buscar por nome..." onkeyup="buscarPacientes()">
+
+<!-- Filtro por gênero -->
+<select id="generoBusca" onchange="buscarPacientes()">
+    <option value="">Filtrar por gênero</option>
+    <option value="M">Masculino</option>
+    <option value="F">Feminino</option>
+</select>
+
+<!-- Filtro por data de nascimento -->
+<input type="date" id="dataNascBusca" onchange="buscarPacientes()" placeholder="Buscar por data de nascimento">
+
+<!-- Filtro por status trabalhista -->
+<select id="statusBusca" onchange="buscarPacientes()">
+    <option value="">Filtrar por status trabalhista</option>
+    <option value="empregado">Empregado</option>
+    <option value="autonomo">Autônomo</option>
+    <option value="desempregado">Desempregado</option>
+    <option value="estagiario">Estagiário</option>
+    <option value="aposentado">Aposentado</option>
+    <option value="pensionista">Pensionista</option>
+    <option value="licenca">Licença</option>
+</select>
 
 <div id="resultados">
     <?php
@@ -108,15 +132,25 @@ $result = mysqli_query($conn, $sql);
 <script>
     function buscarPacientes() {
         var nomeBusca = $("#nomeBusca").val();
+        var generoBusca = $("#generoBusca").val();
+        var dataNascBusca = $("#dataNascBusca").val();
+        var statusBusca = $("#statusBusca").val();
+
         $.ajax({
             url: 'buscar_pacientes.php',
             type: 'POST',
-            data: { nomeBusca: nomeBusca },
+            data: { 
+                nomeBusca: nomeBusca, 
+                generoBusca: generoBusca, 
+                dataNascBusca: dataNascBusca, 
+                statusBusca: statusBusca 
+            },
             success: function(response) {
                 $("#resultados").html(response);
             }
         });
     }
 </script>
+
 </body>
 </html>
