@@ -2,7 +2,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #e3fff5;
+    background-color: #f8fcf0;
     margin: 0;
     padding: 0;
     display: flex;
@@ -87,12 +87,11 @@ button:hover {
     display: flex;
    /* justify-content: space-between;*/
     flex-wrap: wrap;
-   
     margin-bottom: 20px;
     padding: 10px;
     background-color: #f9f9f9;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px #b3bda0;
 }
 
 .filtros-container input,
