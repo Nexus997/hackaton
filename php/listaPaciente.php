@@ -4,8 +4,13 @@ require_once('conn.php');
 
 $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro ao conectar ao banco de dados');
 
-$sql = "SELECT * FROM paciente";
-$result = mysqli_query($conn, $sql);
+$idAcao = isset($_POST['idAcao']) ? $_POST['idAcao'] : null;
+
+$sql = "SELECT * FROM paciente WHERE idAcao = ?";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, 'i', $idAcao);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -64,7 +69,10 @@ $result = mysqli_query($conn, $sql);
         <option value="pensionista">Pensionista</option>
         <option value="licenca">Licença</option>
     </select>
-        <a class="cadastroPaciente"href="cadastroPaciente.php">Cadastrar Paciente</a>
+    <form id="cadastroPacienteForm" action="cadastroPaciente.php" method="post" style="display: inline;">
+    <input type="hidden" name="idAcao" value="<?php echo $idAcao; ?>">
+    <button type="submit">Cadastrar Paciente</button>
+</form>
 </div>
 
 <div id="resultados">
@@ -101,6 +109,7 @@ $result = mysqli_query($conn, $sql);
                     <td>{$row['contatoPaciente']}</td>
                     <td>{$row['documentoPaciente']}</td>
                     <td>{$row['observacaoPaciente']}</td>
+                    
                     <td>
                         <form action='atendimento.php' method='post'>
                             <input type='hidden' name='idPaciente' value='{$row['idPaciente']}'>
@@ -125,6 +134,7 @@ $result = mysqli_query($conn, $sql);
     var generoBusca = $("#generoBusca").val();
     var idadeBusca = $("#idadeBusca").val(); // Nova variável para a faixa etária
     var statusBusca = $("#statusBusca").val();
+    var idAcao = "<?php echo $idAcao; ?>"; 
 
     $.ajax({
         url: 'buscar_pacientes.php',
@@ -133,7 +143,9 @@ $result = mysqli_query($conn, $sql);
             nomeBusca: nomeBusca, 
             generoBusca: generoBusca, 
             idadeBusca: idadeBusca, // Envio da faixa etária
-            statusBusca: statusBusca 
+            statusBusca: statusBusca,
+            idAcao: idAcao // Envia o ID da ação para filtragem
+
         },
         success: function(response) {
             $("#resultados").html(response);

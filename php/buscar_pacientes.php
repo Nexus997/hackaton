@@ -9,11 +9,12 @@ $nomeBusca = isset($_POST['nomeBusca']) ? $_POST['nomeBusca'] : '';
 $generoBusca = isset($_POST['generoBusca']) ? $_POST['generoBusca'] : '';
 $idadeBusca = isset($_POST['idadeBusca']) ? $_POST['idadeBusca'] : '';
 $statusBusca = isset($_POST['statusBusca']) ? $_POST['statusBusca'] : '';
+$idAcao = isset($_POST['idAcao']) ? $_POST['idAcao'] : null; // Captura o idAcao
 
 // Monta a consulta SQL com filtros
-$sql = "SELECT * FROM paciente WHERE 1=1";
-$params = [];
-$types = '';
+$sql = "SELECT * FROM paciente WHERE idAcao = ?"; // Filtro por idAcao
+$params = [$idAcao];
+$types = 'i'; // 'i' para inteiro, já que idAcao é um número
 
 // Filtro por nome
 if ($nomeBusca) {
@@ -29,6 +30,7 @@ if ($generoBusca) {
     $types .= 's';
 }
 
+// Filtro por faixa etária
 if ($idadeBusca) {
     if ($idadeBusca === 'menor18') {
         $sql .= " AND idade < 18";
@@ -50,15 +52,11 @@ if ($statusBusca) {
     $types .= 's';
 }
 
-// Prepara a consulta apenas se houver filtros
-if (count($params) > 0) {
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, $types, ...$params);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-} else {
-    $result = mysqli_query($conn, $sql);  // Se não houver filtros, executa normalmente
-}
+// Prepara a consulta
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, $types, ...$params);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 
 if (mysqli_num_rows($result) > 0) {
     echo "<table border='1'>
@@ -76,12 +74,8 @@ if (mysqli_num_rows($result) > 0) {
             </tr>";
 
     while ($row = mysqli_fetch_assoc($result)) {
-        // Verifica e formata o gênero
         $genero = $row['generoPaciente'] === 'M' ? 'Masculino' : 'Feminino';
-
-        // Formata o status trabalhista
-        $statusTrabalhista = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especifcado';
-
+        $statusTrabalhista = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especificado';
 
         echo "<tr>
                 <td>{$row['nomePaciente']}</td>  
