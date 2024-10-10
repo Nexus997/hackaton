@@ -19,7 +19,7 @@ $result = mysqli_stmt_get_result($stmt);
 <head>
     <meta charset="UTF-8">
     <title>Lista de Ações</title>
-    <link rel="stylesheet" href="lista_pacientes.css"> <!-- Link para o CSS externo -->
+    <link rel="stylesheet" href="css/lista_Acao.css"> <!-- Link para o CSS externo -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
