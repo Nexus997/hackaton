@@ -17,5 +17,15 @@
         <button>Lista de Pacientes</button>
 
     </a>
+    <a href="/php/listaAcao.php">
+
+        <button>Lista de Ações</button>
+
+    </a>
+    <a href="/php/cadastroAcao.php">
+
+        <button>Cadastro de ações</button>
+
+    </a>
 </body>
 </html>
