@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contatoPaciente = $_POST['contatoPaciente'];
     $documentoPaciente = $_POST['documentoPaciente'];
     $observacoesPaciente = $_POST['observacoesPaciente'];
+    $idAcao = $_POST['idAcao'];
 
     function calcularIdade($dataNascimento) {
         $dataNascimento = new DateTime($dataNascimento);
@@ -48,15 +49,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         statusTrabalho, 
         contatoPaciente, 
         documentoPaciente, 
-        observacaoPaciente
+        observacaoPaciente,
+        idAcao
     ) VALUES (
-        ?, ?, ?, ?, ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )";
 
     $stmt = mysqli_prepare($conn, $sql);
     
     // Adicione a idade ao binding dos parâmetros
-    mysqli_stmt_bind_param($stmt, 'sssssssss', $nomePaciente, $dataNasc, $idade, $bairro, $generoPaciente, $statusTrabalhista, $contatoPaciente, $documentoPaciente, $observacoesPaciente);
+    mysqli_stmt_bind_param($stmt, 'sssssssssi', $nomePaciente, $dataNasc, $idade, $bairro, $generoPaciente, $statusTrabalhista, $contatoPaciente, $documentoPaciente, $observacoesPaciente, $idAcao);
 
     if (mysqli_stmt_execute($stmt)) {
         echo "Paciente cadastrado com sucesso!";

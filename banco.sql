@@ -66,25 +66,6 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 -- Table `hackatonsaude`.`paciente_acoes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hackatonsaude`.`paciente_acoes` (
-  `idPacienteAcao` INT NOT NULL AUTO_INCREMENT,
-  `idPaciente` INT NOT NULL,
-  `idAcao` INT NOT NULL,
-  PRIMARY KEY (`idPacienteAcao`),
-  INDEX `idPaciente` (`idPaciente` ASC) VISIBLE,
-  INDEX `idAcao` (`idAcao` ASC) VISIBLE,
-  CONSTRAINT `paciente_acoes_ibfk_1`
-    FOREIGN KEY (`idPaciente`)
-    REFERENCES `hackatonsaude`.`paciente` (`idPaciente`)
-    ON DELETE CASCADE,
-  CONSTRAINT `paciente_acoes_ibfk_2`
-    FOREIGN KEY (`idAcao`)
-    REFERENCES `hackatonsaude`.`acoes` (`idAcao`)
-    ON DELETE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

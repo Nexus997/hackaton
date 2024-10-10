@@ -43,7 +43,9 @@
     <input type="text" name="documentoPaciente" id="documentoPaciente"> 
 
     <label for="observacoesPaciente">Observações do paciente</label>
-    <textarea name="observacoesPaciente" id="observacoesPaciente"></textarea>
+
+    <input type="hidden" name="idAcao" value="<?php echo $_POST['idAcao']; ?>">
+    <textarea name="observacoesPaciente" id="observacoesPaciente"><?php echo $_POST['idAcao']; ?></textarea>
 
 
 
