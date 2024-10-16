@@ -19,19 +19,24 @@ $result = mysqli_stmt_get_result($stmt);
 <head>
     <meta charset="UTF-8">
     <title>Lista de Ações</title>
-    <link rel="stylesheet" href="lista_pacientes.css"> <!-- Link para o CSS externo -->
+    <link rel="stylesheet" href="css/lista_acao.css"> <!-- Link para o CSS externo -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-<a href="inicio.php">Voltar</a>
-<a href="cadastroAcao.php">Cadastrar Ação</a>
+<nav>
+    <a href="inicio.php">Voltar</a>
+</nav>
+
 
 <h1>Lista de Ações</h1>
-
+<div class="filtros-container">
 <!-- Filtro por nome -->
 <input type="text" id="nomeBusca" placeholder="Buscar por nome..." onkeyup="buscarAcoes()">
-
+<form id="cadastroAcaoForm" action="cadastroAcao.php" method="post" style="display: inline;">
+    <button type="submit">Cadastrar Ação</button>
+</form>
+</div>
 <div id="resultados">
     <?php
     if (mysqli_num_rows($result) > 0) {

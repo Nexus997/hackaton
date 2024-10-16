@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt = mysqli_prepare($conn, $sql);
     
-    // Adicione a idade ao binding dos parâmetos
+  
     mysqli_stmt_bind_param($stmt, 'sssssssssi', $nomePaciente, $dataNasc, $idade, $bairro, $generoPaciente, $statusTrabalhista, $contatoPaciente, $documentoPaciente, $observacoesPaciente, $idAcao);
 
     if (mysqli_stmt_execute($stmt)) {
