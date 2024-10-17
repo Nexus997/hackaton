@@ -1,75 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Atendimento</title>
+    <link rel="stylesheet" href="css/cadastro.css">
 </head>
 <body>
-<style>
-    /* Estilo para a tabela */
-    table {
-        border-collapse: collapse;
-        width: 100%;
-        margin: 20px 0;
-    }
-    
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-        vertical-align: top; /* Alinha o texto na parte superior da célula */
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-
-    /* Estilo para o formulário */
-    form {
-        margin: 20px 0;
-        border: 1px solid #ddd;
-        padding: 15px;
-        
-        border-radius: 5px;
-        width: 800px; /* Ajuste a largura conforme necessário */
-    }
-
-    label {
-        display: block; /* Faz com que cada label fique em sua linha */
-        margin: 10px 0 5px; /* Margem para separar os campos */
-    }
-
-    input[type="text"],
-    input[type="date"],
-    select,
-    textarea {
-        width: 250px; /* Faz os campos ocuparem toda a largura do formulário */
-        padding: 8px;
-        margin-bottom: 10px; /* Espaçamento entre os campos */
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    textarea {
-        height: 100px; /* Altura fixa para o textarea, ajuste conforme necessário */
-    }
-
-    button {
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        background-color: #007BFF; /* Cor do botão */
-        color: white;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #0056b3; /* Cor ao passar o mouse */
-    }
-</style>
-
-
+<nav>
+    <a href="listaAcao.php">Voltar</a>
+</nav>
+<h1>Atendimento</h1>
 <?php
 // Configurações de conexão
 require_once('conn.php');

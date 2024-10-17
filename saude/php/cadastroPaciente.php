@@ -4,28 +4,35 @@
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Paciente</title>
+    <link rel="stylesheet" href="css/cadastro.css">
 </head>
 <body>
+
+<nav>
+    <a href="listaAcao.php">Voltar</a>
+</nav>
+
+    <h1>Cadastro de Paciente</h1>
     <form action="cadastrarPaciente.php" method="post">
 
     <label for="nomePaciente">Nome do paciente:</label>
-    <input type="text" name="nomePaciente" id="nomePaciente">
+    <input type="text" name="nomePaciente" id="nomePaciente" required>
 
     <label for="dataNasc">Data de nascimento:</label>
-    <input type="date" name="dataNasc" id="dataNasc">
+    <input type="date" name="dataNasc" id="dataNasc" required>
 
     <label for="bairro">Bairro:</label>
-    <input type="text" name="bairro" id="bairro">
+    <input type="text" name="bairro" id="bairro" required>
 
     <label for="generoPaciente">Gênero do paciente:</label>
-    <select name="generoPaciente" id="generoPaciente">
+    <select name="generoPaciente" id="generoPaciente" required>
         <option value="" disabled selected hidden>Selecione o gênero do paciente</option>
         <option value="M">Masculino</option>
         <option value="F">Feminino</option>
     </select>
 
     <label for="statusTrabalhista">Situação trabalhista:</label>
-    <select name="statusTrabalhista" id="statusTrabalhista">
+    <select name="statusTrabalhista" id="statusTrabalhista" required>
         <option value="" disabled selected hidden>Selecione a situação trabalhista</option>
         <option value="Empregado">Empregado</option>
         <option value="Autônomo">Autônomo</option>
@@ -37,10 +44,10 @@
     </select>
 
     <label for="contatoPaciente">Contato:</label>
-    <input type="text" name="contatoPaciente" id="contatoPaciente">
+    <input type="text" name="contatoPaciente" id="contatoPaciente" required>
 
     <label for="documentoPaciente">Documento (RG ou SUS):</label>
-    <input type="text" name="documentoPaciente" id="documentoPaciente"> 
+    <input type="text" name="documentoPaciente" id="documentoPaciente" required> 
 
     <label for="observacoesPaciente">Observações do paciente</label>
 

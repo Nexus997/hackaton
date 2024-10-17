@@ -6,6 +6,14 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro 
 
 $idAcao = isset($_POST['idAcao']) ? $_POST['idAcao'] : null;
 
+// Função para censurar os dados
+function censurarDados($valor) {
+    if (strlen($valor) <= 4) {
+        return str_repeat('*', strlen($valor) - 1) . substr($valor, -1);
+    }
+    return substr($valor, 0, 3) . str_repeat('*', strlen($valor) - 4) . substr($valor, -1);
+}
+
 $sql = "SELECT * FROM paciente WHERE idAcao = ?";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, 'i', $idAcao);
@@ -24,7 +32,7 @@ $result = mysqli_stmt_get_result($stmt);
 
 <body>
 <nav>
-    <a href="inicio.php">Voltar</a>
+    <a href="listaAcao.php">Voltar</a>
 </nav>
 
 <style>
@@ -97,7 +105,11 @@ $result = mysqli_stmt_get_result($stmt);
             $genero = $row['generoPaciente'] === 'M' ? 'Masculino' : 'Feminino';
             
             // Formata o status trabalhista
-            $statusTrabalhista = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especifcado';
+            $statusTrabalhista = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especificado';
+
+            // Censura os campos de contato e documento
+            $contatoCensurado = censurarDados($row['contatoPaciente']);
+            $documentoCensurado = censurarDados($row['documentoPaciente']);
 
             echo "<tr>
                     <td>{$row['nomePaciente']}</td>
@@ -106,8 +118,8 @@ $result = mysqli_stmt_get_result($stmt);
                     <td>{$row['bairro']}</td>
                     <td>$genero</td>
                     <td>$statusTrabalhista</td>
-                    <td>{$row['contatoPaciente']}</td>
-                    <td>{$row['documentoPaciente']}</td>
+                    <td>$contatoCensurado</td>
+                    <td>$documentoCensurado</td>
                     <td>{$row['observacaoPaciente']}</td>
                     
                     <td>
@@ -128,30 +140,28 @@ $result = mysqli_stmt_get_result($stmt);
 </div>
 
 <script>
-
     function buscarPacientes() {
-    var nomeBusca = $("#nomeBusca").val();
-    var generoBusca = $("#generoBusca").val();
-    var idadeBusca = $("#idadeBusca").val(); // Nova variável para a faixa etária
-    var statusBusca = $("#statusBusca").val();
-    var idAcao = "<?php echo $idAcao; ?>"; 
+        var nomeBusca = $("#nomeBusca").val();
+        var generoBusca = $("#generoBusca").val();
+        var idadeBusca = $("#idadeBusca").val(); // Nova variável para a faixa etária
+        var statusBusca = $("#statusBusca").val();
+        var idAcao = "<?php echo $idAcao; ?>"; 
 
-    $.ajax({
-        url: 'buscar_pacientes.php',
-        type: 'POST',
-        data: { 
-            nomeBusca: nomeBusca, 
-            generoBusca: generoBusca, 
-            idadeBusca: idadeBusca, // Envio da faixa etária
-            statusBusca: statusBusca,
-            idAcao: idAcao // Envia o ID da ação para filtragem
-
-        },
-        success: function(response) {
-            $("#resultados").html(response);
-        }
-    });
-}
+        $.ajax({
+            url: 'buscar_pacientes.php',
+            type: 'POST',
+            data: { 
+                nomeBusca: nomeBusca, 
+                generoBusca: generoBusca, 
+                idadeBusca: idadeBusca, // Envio da faixa etária
+                statusBusca: statusBusca,
+                idAcao: idAcao // Envia o ID da ação para filtragem
+            },
+            success: function(response) {
+                $("#resultados").html(response);
+            }
+        });
+    }
 </script>
 
 </body>

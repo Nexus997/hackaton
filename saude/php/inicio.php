@@ -12,17 +12,17 @@
 
     </a> 
 
-    <a href="/php/listaPaciente.php">
+    <a href="/saude/php/listaPaciente.php">
 
         <button>Lista de Pacientes</button>
 
     </a>
-    <a href="/php/listaAcao.php">
+    <a href="/saude/php/listaAcao.php">
 
         <button>Lista de Ações</button>
 
     </a>
-    <a href="/php/cadastroAcao.php">
+    <a href="/saude/php/cadastroAcao.php">
 
         <button>Cadastro de ações</button>
 

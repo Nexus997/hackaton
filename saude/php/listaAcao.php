@@ -24,18 +24,13 @@ $result = mysqli_stmt_get_result($stmt);
 </head>
 
 <body>
-<nav>
-    <a href="inicio.php">Voltar</a>
-</nav>
-
 
 <h1>Lista de Ações</h1>
 <div class="filtros-container">
-<!-- Filtro por nome -->
-<input type="text" id="nomeBusca" placeholder="Buscar por nome..." onkeyup="buscarAcoes()">
-<form id="cadastroAcaoForm" action="cadastroAcao.php" method="post" style="display: inline;">
-    <button type="submit">Cadastrar Ação</button>
-</form>
+    <input type="text" id="nomeBusca" placeholder="Buscar por nome..." onkeyup="buscarAcoes()">
+    <form id="cadastroAcaoForm" action="cadastroAcao.php" method="post" style="display: inline;">
+        <button type="submit">Cadastrar Ação</button>
+    </form>
 </div>
 <div id="resultados">
     <?php
@@ -46,12 +41,16 @@ $result = mysqli_stmt_get_result($stmt);
                     <th>Data da Ação</th>
                     <th>Tipo de Ação</th>
                     <th>Local</th>
+                    <th></th>
                 </tr>";
 
         while ($row = mysqli_fetch_assoc($result)) {
+            // Formatar a data para o padrão brasileiro
+            $dataAcao = date('d/m/Y', strtotime($row['dataAcao']));
+
             echo "<tr>
                     <td>{$row['nomeAcao']}</td>
-                    <td>{$row['dataAcao']}</td>
+                    <td>{$dataAcao}</td>
                     <td>{$row['tipoAcao']}</td>
                     <td>{$row['localAcao']}</td>
                     <td>
@@ -87,3 +86,6 @@ $result = mysqli_stmt_get_result($stmt);
         });
     }
 </script>
+
+</body>
+</html>

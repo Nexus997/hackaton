@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cadastro de Paciente</title>
 </head>
 <body>
 
-
-    
 <?php 
 if ($_SERVER["REQUEST_METHOD"] != "POST") {
-    
     header("Location: erro.php");
     exit;
 }
@@ -21,7 +18,6 @@ require_once('conn.php');
 $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro ao conectar ao banco de dados');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-   
     $nomePaciente = $_POST['nomePaciente'];
     $dataNasc = $_POST['dataNasc'];
     $bairro = $_POST['bairro'];
@@ -56,12 +52,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     )";
 
     $stmt = mysqli_prepare($conn, $sql);
-    
-  
     mysqli_stmt_bind_param($stmt, 'sssssssssi', $nomePaciente, $dataNasc, $idade, $bairro, $generoPaciente, $statusTrabalhista, $contatoPaciente, $documentoPaciente, $observacoesPaciente, $idAcao);
 
     if (mysqli_stmt_execute($stmt)) {
-        echo "Paciente cadastrado com sucesso!";
+        // Criar um formulário para redirecionar por POST
+        echo "<form id='redirectForm' action='listaPaciente.php' method='post' style='display: none;'>
+                <input type='hidden' name='idAcao' value='" . htmlspecialchars($idAcao) . "'>
+              </form>
+              <script>
+                document.getElementById('redirectForm').submit();
+              </script>";
+        exit; // Para garantir que nenhum código adicional seja executado
     } else {
         echo "Erro ao cadastrar paciente: " . mysqli_error($conn);
     }
@@ -72,6 +73,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $conn->close();
 ?>
 
-<a href="listaPaciente.php">Ir à lista de pacientes</a>
 </body>
 </html>

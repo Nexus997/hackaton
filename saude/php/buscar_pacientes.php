@@ -4,6 +4,12 @@ require_once('conn.php');
 
 $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro ao conectar ao banco de dados');
 
+function censurarDados($valor) {
+    if (strlen($valor) <= 4) {
+        return str_repeat('*', strlen($valor) - 1) . substr($valor, -1);
+    }
+    return substr($valor, 0, 3) . str_repeat('*', strlen($valor) - 4) . substr($valor, -1);
+}
 // Verifica os parâmetros de pesquisa
 $nomeBusca = isset($_POST['nomeBusca']) ? $_POST['nomeBusca'] : '';
 $generoBusca = isset($_POST['generoBusca']) ? $_POST['generoBusca'] : '';
@@ -76,7 +82,8 @@ if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         $genero = $row['generoPaciente'] === 'M' ? 'Masculino' : 'Feminino';
         $statusTrabalhista = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especificado';
-
+        $contatoCensurado = censurarDados($row['contatoPaciente']);
+        $documentoCensurado = censurarDados($row['documentoPaciente']);
         echo "<tr>
                 <td>{$row['nomePaciente']}</td>  
                 <td>{$row['dataNasc']}</td>
@@ -84,8 +91,8 @@ if (mysqli_num_rows($result) > 0) {
                 <td>{$row['bairro']}</td>
                 <td>$genero</td>
                 <td>$statusTrabalhista</td>
-                <td>{$row['contatoPaciente']}</td>
-                <td>{$row['documentoPaciente']}</td>
+                <td>$contatoCensurado</td>
+                    <td>$documentoCensurado</td>
                 <td class='observacao'>{$row['observacaoPaciente']}</td> 
                 <td>
                     <form action='atendimento.php' method='post'>
