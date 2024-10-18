@@ -25,7 +25,7 @@ $result = mysqli_stmt_get_result($stmt);
 
 <body>
 <nav>
-    <a href="inicio.php">Voltar</a>
+    <a href="listaDepartamento.php">Voltar</a>
 </nav>
 
 <style>

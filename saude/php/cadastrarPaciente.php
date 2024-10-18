@@ -17,6 +17,14 @@ require_once('conn.php');
 
 $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro ao conectar ao banco de dados');
 
+// Verifica se o idAcao foi enviado
+$idAcao = isset($_POST['idAcao']) ? $_POST['idAcao'] : null;
+
+if ($idAcao === null) {
+    header("Location: listaAcao.php");
+    exit;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nomePaciente = $_POST['nomePaciente'];
     $dataNasc = $_POST['dataNasc'];
@@ -26,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contatoPaciente = $_POST['contatoPaciente'];
     $documentoPaciente = $_POST['documentoPaciente'];
     $observacoesPaciente = $_POST['observacoesPaciente'];
-    $idAcao = $_POST['idAcao'];
 
     function calcularIdade($dataNascimento) {
         $dataNascimento = new DateTime($dataNascimento);
@@ -55,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_stmt_bind_param($stmt, 'sssssssssi', $nomePaciente, $dataNasc, $idade, $bairro, $generoPaciente, $statusTrabalhista, $contatoPaciente, $documentoPaciente, $observacoesPaciente, $idAcao);
 
     if (mysqli_stmt_execute($stmt)) {
-        // Criar um formulário para redirecionar por POST
+        // Redireciona para listaPaciente.php com idAcao
         echo "<form id='redirectForm' action='listaPaciente.php' method='post' style='display: none;'>
                 <input type='hidden' name='idAcao' value='" . htmlspecialchars($idAcao) . "'>
               </form>
@@ -70,6 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_stmt_close($stmt);
 }
 
+// Fecha a conexão
 $conn->close();
 ?>
 

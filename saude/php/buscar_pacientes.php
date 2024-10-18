@@ -84,9 +84,10 @@ if (mysqli_num_rows($result) > 0) {
         $statusTrabalhista = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especificado';
         $contatoCensurado = censurarDados($row['contatoPaciente']);
         $documentoCensurado = censurarDados($row['documentoPaciente']);
+        $dataPaciente = date('d/m/Y', strtotime($row['dataNasc']));
         echo "<tr>
                 <td>{$row['nomePaciente']}</td>  
-                <td>{$row['dataNasc']}</td>
+                <td>{$dataPaciente}</td>
                 <td>{$row['idade']}</td>
                 <td>{$row['bairro']}</td>
                 <td>$genero</td>

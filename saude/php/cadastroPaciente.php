@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Paciente</title>
     <link rel="stylesheet" href="css/cadastro.css">
+    <link rel="icon" href="../img/logo atend+.png" type="image/x-icon">
 </head>
 <body>
 
@@ -16,13 +17,13 @@
     <form action="cadastrarPaciente.php" method="post">
 
     <label for="nomePaciente">Nome do paciente:</label>
-    <input type="text" name="nomePaciente" id="nomePaciente" required>
+    <input type="text" name="nomePaciente" id="nomePaciente" value="Gustavo Felipe" required>
 
     <label for="dataNasc">Data de nascimento:</label>
-    <input type="date" name="dataNasc" id="dataNasc" required>
+    <input type="date" name="dataNasc" id="dataNasc" value="2004-11-15" required>
 
     <label for="bairro">Bairro:</label>
-    <input type="text" name="bairro" id="bairro" required>
+    <input type="text" name="bairro" id="bairro" value ="Bairro Três" required>
 
     <label for="generoPaciente">Gênero do paciente:</label>
     <select name="generoPaciente" id="generoPaciente" required>
@@ -44,10 +45,11 @@
     </select>
 
     <label for="contatoPaciente">Contato:</label>
-    <input type="text" name="contatoPaciente" id="contatoPaciente" required>
+    <input type="text" name="contatoPaciente" id="contatoPaciente" value ="(12) 34578-9999" required maxlength=
+    "17">
 
     <label for="documentoPaciente">Documento (RG ou SUS):</label>
-    <input type="text" name="documentoPaciente" id="documentoPaciente" required> 
+    <input type="text" name="documentoPaciente" id="documentoPaciente" maxlength="15" required> 
 
     <label for="observacoesPaciente">Observações do paciente</label>
 

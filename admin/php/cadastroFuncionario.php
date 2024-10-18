@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Funcionário</title>
+    <link rel="stylesheet" href="../css/cadastro.css">
 </head>
 <body>
     <h1>Cadastro de Funcionário</h1>
@@ -16,8 +17,7 @@
         <label for="documento">Documento:</label>
         <input type="text" id="documento" name="documento" required><br><br>
 
-        <label for="idade">Idade:</label>
-        <input type="number" id="idade" name="idade" required><br><br>
+        
 
         <label for="dataNasc">Data de Nascimento:</label>
         <input type="date" id="dataNasc" name="dataNasc" required><br><br>

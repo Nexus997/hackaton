@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Ação</title>
+    <title>Cadastro de campanhas</title>
     <link rel="stylesheet" href="css/cadastro.css">
+    <link rel="icon" href="../img/logo atend+.png" type="image/x-icon">
 </head>
 <body>
     
 <nav>
     <a href="listaAcao.php">Voltar</a>
 </nav>
-    <H1>Cadastro de Ação</H1>
+    <H1>Cadastro de campanhas</H1>
     <form action="cadastrarAcao.php" method="post">
 
-    <label for="nomeAcao">Nome do ação:</label>
-    <input type="text" name="nomeAcao" id="nomeAcao" required>
+    <label for="nomeAcao">Nome da campanha:</label>
+    <input type="text" name="nomeAcao" id="nomeAcao" value="Vacinação Febre Amarela" required>
 
-    <label for="dataAcao">Data da ação:</label>
-    <input type="date" name="dataAcao" id="dataAcao" required>
+    <label for="dataAcao">Data da campanha:</label>
+    <input type="date" name="dataAcao" id="dataAcao" value="2024-10-17" required>
 
     <label for="local">Local:</label>
-    <input type="text" name="local" id="local" required>
+    <input type="text" name="local" id="local" value = "ETEC Doutor Renato Cordeiro" required>
 
 
     <label for="tipoAcao">Tipo:</label>
-    <input type="text" name="tipoAcao" id="tipoAcao" required>
+    <input type="text" name="tipoAcao" id="tipoAcao" value="Vacinação" required>
 
  
 

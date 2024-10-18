@@ -18,15 +18,23 @@ if (mysqli_num_rows($result) > 0) {
                 <th>Data da Ação</th>
                 <th>Tipo de Ação</th>
                 <th>Local</th>
+                <th></th>
             </tr>";
 
     while ($row = mysqli_fetch_assoc($result)) {
+        $dataAcao = date('d/m/Y', strtotime($row['dataAcao']));
         echo "<tr>
-                <td>{$row['nomeAcao']}</td>
-                <td>{$row['dataAcao']}</td>
-                <td>{$row['tipoAcao']}</td>
-                <td>{$row['localAcao']}</td>
-              </tr>";
+                    <td>{$row['nomeAcao']}</td>
+                    <td>{$dataAcao}</td>
+                    <td>{$row['tipoAcao']}</td>
+                    <td>{$row['localAcao']}</td>
+                    <td>
+                        <form action='listaPaciente.php' method='post'>
+                            <input type='hidden' name='idAcao' value='{$row['idAcao']}'>
+                            <button type='submit'>Lista de Pacientes</button>
+                        </form>
+                    </td>
+                  </tr>";
     }
     echo "</table>";
 } else {

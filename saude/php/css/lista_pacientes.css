@@ -129,7 +129,8 @@ nav {
     width: 100%;
     justify-content: center;
     gap: 20px; /* Espaçamento entre os botões */
-    margin-bottom: 20px; /* Espaço entre a navegação e o conteúdo */
+    margin-bottom: 20px; 
+    position: absolute;/* Espaço entre a navegação e o conteúdo */
 }
 
 /* Estilo dos links que parecem botões */

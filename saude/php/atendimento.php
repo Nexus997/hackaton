@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Atendimento</title>
     <link rel="stylesheet" href="css/cadastro.css">
+    <link rel="icon" href="../img/logo atend+.png" type="image/x-icon">
 </head>
 <body>
 <nav>
@@ -20,6 +21,7 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro 
 // Verifica se o ID do paciente foi enviado via POST
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPaciente'])) {
     $idPaciente = $_POST['idPaciente'];
+    $idAcao = $_POST['idAcao'];
 
     // Consulta para obter os dados do paciente
     $sql = "SELECT * FROM paciente WHERE idPaciente = ?";
@@ -77,10 +79,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPaciente'])) {
                 <input type='text' name='tipoSanguineo' id='tipoSanguineo' value='{$row['tipoSanguineo']}'>
 
                 <label for='pressao'>Pressão:</label>
-                <input type='text' name='pressao' id='pressao' value='{$row['pressao']}'>
+                <input type='text' name='pressao' id='pressao' value='{$row['pressao']}' >
 
                 <label for='dataAtendimento'>Data do Atendimento:</label>
-                <input type='date' name='dataAtendimento' id='dataAtendimento' value='{$row['dataAtendimento']}'>
+                <input type='date' name='dataAtendimento' id='dataAtendimento' value='{$row['dataAtendimento']}' required>
 
                 <label for='localAtendimento'>Local do Atendimento:</label>
                 <input type='text' name='localAtendimento' id='localAtendimento' value='{$row['localAtendimento']}'>
@@ -91,6 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idPaciente'])) {
                 <label for='observacaoAtendente'>Observação do Atendente:</label>
                 <textarea name='observacaoAtendente' id='observacaoAtendente'>{$row['observacaoAtendente']}</textarea>
                 <input type='hidden' value='$idPaciente' name='idPaciente'>
+                <input type='hidden' value='$idAcao' name='idAcao'> 
                 <button type='submit'>Salvar Atendimento</button>
               </form>";
     } else {

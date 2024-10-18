@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,23 +22,30 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro 
 // Verifica se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Coleta os dados do formulário
-    $idPaciente = $_POST['idPaciente'];
-    $nomePaciente = $_POST['nomePaciente'];
-    $dataNasc = $_POST['dataNasc'];
-    $bairro = $_POST['bairro'];
-    $generoPaciente = $_POST['generoPaciente'];
-    $statusTrabalhista = $_POST['statusTrabalhista'];
-    $contatoPaciente = $_POST['contatoPaciente'];
-    $documentoPaciente = $_POST['documentoPaciente'];
-    $observacoesPaciente = $_POST['observacoesPaciente'];
-    $alturaPaciente = $_POST['alturaPaciente'];
-    $pesoPaciente = $_POST['pesoPaciente'];
-    $tipoSanguineo = $_POST['tipoSanguineo'];
-    $pressao = $_POST['pressao'];
-    $dataAtendimento = $_POST['dataAtendimento'];
-    $localAtendimento = $_POST['localAtendimento'];
-    $responsavelAtendimento = $_POST['responsavelAtendimento'];
-    $observacaoAtendente = $_POST['observacaoAtendente'];
+    $idPaciente = $_POST['idPaciente'] ?? null;
+    $idAcao = $_POST['idAcao'] ?? null;
+    $nomePaciente = $_POST['nomePaciente'] ?? '';
+    $dataNasc = $_POST['dataNasc'] ?? '';
+    $bairro = $_POST['bairro'] ?? '';
+    $generoPaciente = $_POST['generoPaciente'] ?? '';
+    $statusTrabalhista = $_POST['statusTrabalhista'] ?? '';
+    $contatoPaciente = $_POST['contatoPaciente'] ?? '';
+    $documentoPaciente = $_POST['documentoPaciente'] ?? '';
+    $observacoesPaciente = $_POST['observacoesPaciente'] ?? '';
+    $alturaPaciente = $_POST['alturaPaciente'] ?? '';
+    $pesoPaciente = $_POST['pesoPaciente'] ?? '';
+    $tipoSanguineo = $_POST['tipoSanguineo'] ?? '';
+    $pressao = $_POST['pressao'] ?? '';
+    $dataAtendimento = $_POST['dataAtendimento'] ?? '';
+    $localAtendimento = $_POST['localAtendimento'] ?? '';
+    $responsavelAtendimento = $_POST['responsavelAtendimento'] ?? '';
+    $observacaoAtendente = $_POST['observacaoAtendente'] ?? '';
+
+    // Verifica se o idPaciente e idAcao são válidos
+    if ($idPaciente === null || $idAcao === null) {
+        header("Location: listaAcao.php");
+        exit;
+    }
 
     // Atualiza os dados do paciente
     $sql = "UPDATE paciente 
@@ -56,15 +63,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $observacaoAtendente, $idPaciente);
     
     if (mysqli_stmt_execute($stmt)) {
-        echo "<p>Atendimento salvo com sucesso!</p>";
+        // Redireciona após o sucesso
+        echo "<form id='redirectForm' action='listaPaciente.php' method='post' style='display: none;'>
+                <input type='hidden' name='idAcao' value='" . htmlspecialchars($idAcao) . "'>
+              </form>
+              <script>
+                document.getElementById('redirectForm').submit();
+              </script>";
     } else {
-        echo "<p>Erro ao salvar o atendimento: " . mysqli_error($conn) . "</p>";
+        // Redireciona para listaAcao.php em caso de erro
+        header("Location: listaAcao.php");
+        exit;
     }
 
     // Fecha a consulta
     mysqli_stmt_close($stmt);
 } else {
-    echo "<p>Nenhum dado foi enviado.</p>";
+    // Redireciona para listaAcao.php se nenhum dado foi enviado
+    header("Location: listaAcao.php");
+    exit;
 }
 
 // Fecha a conexão

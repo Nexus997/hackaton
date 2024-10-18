@@ -6,6 +6,11 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro 
 
 $idAcao = isset($_POST['idAcao']) ? $_POST['idAcao'] : null;
 
+// Verifica se idAcao foi fornecido
+if ($idAcao === null) {
+    header("Location: listaAcao.php");
+    exit();
+}
 // Função para censurar os dados
 function censurarDados($valor) {
     if (strlen($valor) <= 4) {
@@ -14,6 +19,23 @@ function censurarDados($valor) {
     return substr($valor, 0, 3) . str_repeat('*', strlen($valor) - 4) . substr($valor, -1);
 }
 
+// Consulta para buscar o nome da ação
+$sqlAcao = "SELECT nomeAcao FROM acoes WHERE idAcao = ?";
+$stmtAcao = mysqli_prepare($conn, $sqlAcao);
+mysqli_stmt_bind_param($stmtAcao, 'i', $idAcao);
+mysqli_stmt_execute($stmtAcao);
+$resultAcao = mysqli_stmt_get_result($stmtAcao);
+$acao = mysqli_fetch_assoc($resultAcao);
+
+// Verifica se a ação existe
+if (!$acao) {
+    header("Location: listaAcao.php");
+    exit();
+}
+
+$nomeAcao = $acao['nomeAcao'];
+
+// Consulta para buscar pacientes
 $sql = "SELECT * FROM paciente WHERE idAcao = ?";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, 'i', $idAcao);
@@ -26,6 +48,7 @@ $result = mysqli_stmt_get_result($stmt);
 <head>
     <meta charset="UTF-8">
     <title>Lista de Pacientes</title>
+    <link rel="icon" href="../img/logo atend+.png" type="image/x-icon">
     <link rel="stylesheet" href="css/lista_pacientes.css"> <!-- Link para o CSS externo -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -44,6 +67,7 @@ $result = mysqli_stmt_get_result($stmt);
 </style>
 
 <h1>Lista de Pacientes</h1>
+<h1><?php echo htmlspecialchars($nomeAcao); ?></h1> <!-- Novo h1 para o nome da ação -->
 
 <div class="filtros-container">
     <!-- Filtro por nome -->
@@ -72,15 +96,15 @@ $result = mysqli_stmt_get_result($stmt);
         <option value="empregado">Empregado</option>
         <option value="autonomo">Autônomo</option>
         <option value="desempregado">Desempregado</option>
-        <option value="estagiario">Estagiário</option>
+        <option value="estagiario">Estudante</option>
         <option value="aposentado">Aposentado</option>
         <option value="pensionista">Pensionista</option>
         <option value="licenca">Licença</option>
     </select>
     <form id="cadastroPacienteForm" action="cadastroPaciente.php" method="post" style="display: inline;">
-    <input type="hidden" name="idAcao" value="<?php echo $idAcao; ?>">
-    <button type="submit">Cadastrar Paciente</button>
-</form>
+        <input type="hidden" name="idAcao" value="<?php echo $idAcao; ?>">
+        <button type="submit">Cadastrar Paciente</button>
+    </form>
 </div>
 
 <div id="resultados">
@@ -110,10 +134,11 @@ $result = mysqli_stmt_get_result($stmt);
             // Censura os campos de contato e documento
             $contatoCensurado = censurarDados($row['contatoPaciente']);
             $documentoCensurado = censurarDados($row['documentoPaciente']);
+            $dataPaciente = date('d/m/Y', strtotime($row['dataNasc']));
 
             echo "<tr>
                     <td>{$row['nomePaciente']}</td>
-                    <td>{$row['dataNasc']}</td>
+                    <td>{$dataPaciente}</td>
                     <td>{$row['idade']}</td>
                     <td>{$row['bairro']}</td>
                     <td>$genero</td>
@@ -121,9 +146,9 @@ $result = mysqli_stmt_get_result($stmt);
                     <td>$contatoCensurado</td>
                     <td>$documentoCensurado</td>
                     <td>{$row['observacaoPaciente']}</td>
-                    
                     <td>
                         <form action='atendimento.php' method='post'>
+                             <input type='hidden' name='idAcao' value='{$row['idAcao']}'>
                             <input type='hidden' name='idPaciente' value='{$row['idPaciente']}'>
                             <button type='submit'>Atender</button>
                         </form>
@@ -143,7 +168,7 @@ $result = mysqli_stmt_get_result($stmt);
     function buscarPacientes() {
         var nomeBusca = $("#nomeBusca").val();
         var generoBusca = $("#generoBusca").val();
-        var idadeBusca = $("#idadeBusca").val(); // Nova variável para a faixa etária
+        var idadeBusca = $("#idadeBusca").val();
         var statusBusca = $("#statusBusca").val();
         var idAcao = "<?php echo $idAcao; ?>"; 
 
@@ -153,9 +178,9 @@ $result = mysqli_stmt_get_result($stmt);
             data: { 
                 nomeBusca: nomeBusca, 
                 generoBusca: generoBusca, 
-                idadeBusca: idadeBusca, // Envio da faixa etária
+                idadeBusca: idadeBusca, 
                 statusBusca: statusBusca,
-                idAcao: idAcao // Envia o ID da ação para filtragem
+                idAcao: idAcao 
             },
             success: function(response) {
                 $("#resultados").html(response);

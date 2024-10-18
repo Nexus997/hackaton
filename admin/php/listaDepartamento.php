@@ -19,31 +19,41 @@ $result = mysqli_stmt_get_result($stmt);
 <head>
     <meta charset="UTF-8">
     <title>Lista de Departamentos</title>
+    <br>
+    
     <link rel="stylesheet" href="../css/lista.css"> <!-- Link para o CSS externo -->
 </head>
 
 <body>
-<nav>
-    <a href="inicio.php">Voltar</a>
-</nav>
+
 
 <h1>Lista de Departamentos</h1>
+<form id="cadastroDepartamentoForm" action="cadastroDepartamento.php" method="post" style="display: inline;">
+    <button type="submit">Cadastrar Departamento</button>
+</form>
 
 <div id="resultados">
     <?php
     if (mysqli_num_rows($result) > 0) {
         echo "<table border='1'>
                 <tr>
-                    <th>ID</th>
+                    
                     <th>Nome do Departamento</th>
                     <th>Total de Funcionários</th>
+                    <th></th>
                 </tr>";
 
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr>
-                    <td>{$row['idDepartamento']}</td>
+                    
                     <td>{$row['nomeDepartamento']}</td>
                     <td>{$row['totalFuncionarios']}</td>
+                    <td>
+                        <form action='listaFuncionario.php' method='post'>
+                            <input type='hidden' name='idDepartamento' value='{$row['idDepartamento']}'>
+                            <button type='submit'>Ver Funcionários</button>
+                        </form>
+                    </td>
                   </tr>";
         }
         echo "</table>";
