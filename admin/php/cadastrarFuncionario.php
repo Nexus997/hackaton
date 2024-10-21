@@ -37,6 +37,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Erro: " . $sql . "<br>" . $conn->error;
     }
+
+    echo '<form id="redirectForm" action="listaFuncionario.php" method="post">
+    <input type="hidden" name="idDepartamento" value="' . $idDepartamento . '">
+  </form>';
+echo '<script>document.getElementById("redirectForm").submit();</script>';
 }
 
 $conn->close();
