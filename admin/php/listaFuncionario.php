@@ -4,12 +4,17 @@ require_once('conn.php');
 
 $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro ao conectar ao banco de dados');
 
-// Consulta para buscar todos os funcionários com os respectivos departamentos e contar as faltas
+// Verifica se idDepartamento foi passado via POST
+$idDepartamento = isset($_POST['idDepartamento']) ? intval($_POST['idDepartamento']) : 0;
+
+// Consulta para buscar todos os funcionários do departamento específico e contar as faltas
 $sql = "SELECT f.*, d.nomeDepartamento, 
                (SELECT COUNT(*) FROM faltas WHERE idFuncionario = f.idFuncionario) AS totalFaltas
         FROM funcionario f 
-        LEFT JOIN departamento d ON f.idDepartamento = d.idDepartamento";
+        LEFT JOIN departamento d ON f.idDepartamento = d.idDepartamento
+        WHERE f.idDepartamento = ?";
 $stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, 'i', $idDepartamento);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 ?>
@@ -25,6 +30,7 @@ $result = mysqli_stmt_get_result($stmt);
 
 <body>
 <nav>
+    
     <a href="listaDepartamento.php">Voltar</a>
 </nav>
 
@@ -70,6 +76,8 @@ $result = mysqli_stmt_get_result($stmt);
                     <td>
                         <form action='listaFaltas.php' method='post' style='display: inline;'>
                             <input type='hidden' name='idFuncionario' value='{$row['idFuncionario']}'>
+                            <input type='hidden' name='idDepartamento' value='{$row['idDepartamento']}'>
+                            
                             <button type='submit'>Faltas</button>
                         </form>
                     </td>

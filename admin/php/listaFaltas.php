@@ -6,6 +6,7 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro 
 
 // Obter o ID do funcionário a partir do POST
 $idFuncionario = isset($_POST['idFuncionario']) ? $_POST['idFuncionario'] : null;
+$idDepartamento = isset($_POST['idDepartamento']) ? $_POST['idDepartamento'] : null;
 
 // Verifique se o ID do funcionário foi passado
 if ($idFuncionario) {
@@ -40,11 +41,20 @@ if ($idFuncionario) {
 
 <body>
 <nav>
-    <a href="listaFuncionario.php">Voltar</a>
+    <form action="listaFuncionario.php" method="post" style="display: inline;">
+        <input type="hidden" name="idDepartamento" value="<?php echo $idDepartamento; ?>">
+        <button type="submit">Voltar</button>
+    </form>
 </nav>
 
 <h1>Lista de Faltas</h1>
-<h1>Total de Faltas: <?php echo $totalFaltas; ?></h1> <!-- Exibe o total de faltas -->
+<h1>Total de Faltas: <?php echo $totalFaltas; ?></h1>
+<div>
+    <form action="cadastroFalta.php" method="post">
+        <input type="hidden" name="idFuncionario" value="<?php echo $idFuncionario; ?>">
+        <button type="submit">Cadastrar Nova Falta</button>
+    </form>
+</div>   <!-- Exibe o total de faltas -->
 
 <div id="resultados">
     <?php

@@ -14,15 +14,16 @@ $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, 'iss', $idFuncionario, $dataFalta, $motivo);
 
 if (mysqli_stmt_execute($stmt)) {
-    echo "Falta registrada com sucesso.";
+    // Redireciona para a página de listagem com o idFuncionario via POST
+    echo '<form id="redirectForm" action="listaFaltas.php" method="post">
+            <input type="hidden" name="idFuncionario" value="' . $idFuncionario . '">
+          </form>';
+    echo '<script>document.getElementById("redirectForm").submit();</script>';
+    exit();
 } else {
     echo "Erro ao registrar a falta: " . mysqli_error($conn);
 }
 
 mysqli_stmt_close($stmt);
 mysqli_close($conn);
-
-// Redireciona para a página de listagem ou um feedback
-header('Location: listaFaltas.php'); // Supondo que você tenha uma página para listar as faltas
-exit();
 ?>
