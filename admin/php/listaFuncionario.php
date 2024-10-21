@@ -24,30 +24,21 @@ $result = mysqli_stmt_get_result($stmt);
 <head>
     <meta charset="UTF-8">
     <title>Lista de Funcionários</title>
-    <link rel="stylesheet" href="../css/lista.css"> <!-- Link para o CSS externo -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../css/lista.css">
 </head>
 
 <body>
 <nav>
-    
     <a href="listaDepartamento.php">Voltar</a>
 </nav>
 
-<style>
-    td {
-        max-width: 250px;  /* Largura máxima */
-        overflow-wrap: break-word;  /* Quebra de palavras */
-        white-space: normal;  /* Permite múltiplas linhas */
-    }
-</style>
-
 <h1>Lista de Funcionários</h1>
-<br> 
 
 <form id="cadastroFuncionarioForm" action="cadastroFuncionario.php" method="post" style="display: inline;">
+    <input type='hidden' name='idDepartamento' value="<?php echo $idDepartamento; ?>">
     <button type="submit">Cadastrar Funcionário</button>
 </form>
+
 <div id="resultados">
     <?php
     if (mysqli_num_rows($result) > 0) {
@@ -72,12 +63,10 @@ $result = mysqli_stmt_get_result($stmt);
                     <td>{$row['nomeDepartamento']}</td>
                     <td>{$row['contato']}</td>
                     <td>{$row['salario']}</td>
-                    
                     <td>
                         <form action='listaFaltas.php' method='post' style='display: inline;'>
                             <input type='hidden' name='idFuncionario' value='{$row['idFuncionario']}'>
                             <input type='hidden' name='idDepartamento' value='{$row['idDepartamento']}'>
-                            
                             <button type='submit'>Faltas</button>
                         </form>
                     </td>
@@ -103,6 +92,7 @@ $result = mysqli_stmt_get_result($stmt);
     mysqli_close($conn);
     ?>
 </div>
+
 
 </body>
 </html>

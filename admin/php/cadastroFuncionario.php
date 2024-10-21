@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -17,38 +15,40 @@
         <label for="documento">Documento:</label>
         <input type="text" id="documento" name="documento" required><br><br>
 
-        
-
         <label for="dataNasc">Data de Nascimento:</label>
         <input type="date" id="dataNasc" name="dataNasc" required><br><br>
 
         <label for="dataAdmissao">Data de Admissão:</label>
         <input type="date" id="dataAdmissao" name="dataAdmissao" required><br><br>
 
-        <label for="idDepartamento">ID do Departamento:</label>
-        <select id="idDepartamento" name="idDepartamento" required>
-            <option value="" disabled selected>Selecione um departamento</option>
+        <label for="idDepartamento">Departamento:</label>
+        <input type="hidden" id="idDepartamento" name="idDepartamento" value="<?php echo isset($_POST['idDepartamento']) ? htmlspecialchars($_POST['idDepartamento']) : ''; ?>">
+        <span>
             <?php
             // Conexão com o banco de dados
             require_once('conn.php');
             $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro ao conectar ao banco de dados');
 
-            // Consulta para pegar os departamentos
-            $sql = "SELECT idDepartamento, nomeDepartamento FROM departamento";
-            $result = mysqli_query($conn, $sql);
-
-            // Verifica se há departamentos e cria as opções
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<option value='{$row['idDepartamento']}'>{$row['nomeDepartamento']}</option>";
+            // Pega o nome do departamento correspondente ao ID passado por POST
+            $idDepartamento = isset($_POST['idDepartamento']) ? $_POST['idDepartamento'] : null;
+            if ($idDepartamento) {
+                $sql = "SELECT nomeDepartamento FROM departamento WHERE idDepartamento = ?";
+                $stmt = mysqli_prepare($conn, $sql);
+                mysqli_stmt_bind_param($stmt, 'i', $idDepartamento);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $nomeDepartamento);
+                if (mysqli_stmt_fetch($stmt)) {
+                    echo htmlspecialchars($nomeDepartamento); // Exibe o nome do departamento
+                } else {
+                    echo "Departamento não encontrado.";
                 }
+                mysqli_stmt_close($stmt);
             } else {
-                echo "<option value='' disabled>Nenhum departamento encontrado</option>";
+                echo "ID do departamento não especificado.";
             }
-
             mysqli_close($conn);
             ?>
-        </select><br><br>
+        </span><br><br>
 
         <label for="contato">Contato:</label>
         <input type="text" id="contato" name="contato" required><br><br>
