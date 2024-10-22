@@ -13,19 +13,27 @@ if ($conn->connect_error) {
     die("Falha na conexão: " . $conn->connect_error);
 }
 
-// Buscando todos os funcionários para o dropdown
-$sql = "SELECT idFuncionario, nome FROM funcionario";
-$result = $conn->query($sql);
+// Verifica se o ID do funcionário foi passado por POST
+$idFuncionario = isset($_POST['idFuncionario']) ? intval($_POST['idFuncionario']) : 0;
+
+// Buscando os dados do funcionário
+$sql = "SELECT f.nome, f.salario, f.dataAdmissao, d.nomeDepartamento FROM funcionario f 
+        JOIN departamento d ON f.idDepartamento = d.idDepartamento 
+        WHERE f.idFuncionario = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param('i', $idFuncionario);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    $funcionarios = [];
-    while ($row = $result->fetch_assoc()) {
-        $funcionarios[] = $row;
-    }
+    $funcionario = $result->fetch_assoc();
+    $nomeFuncionario = $funcionario['nome'];
+    $salarioAtual = (float)$funcionario['salario'];
+    $dataInicio = $funcionario['dataAdmissao'];
+    $nomeDepartamento = $funcionario['nomeDepartamento'];
 } else {
-    die("Nenhum funcionário encontrado.");
+    die("Funcionário não encontrado.");
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -34,114 +42,40 @@ if ($result->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calcular PLR</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            margin: auto;
-        }
-        select, input[type="date"], input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        input[type="submit"] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        .result {
-            background-color: #fff;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 400px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="../css/cadastro.css">
+    
 </head>
 <body>
 
 <h2>Calcular PLR</h2>
 
 <form action="" method="post">
-    <label for="funcionario">Selecione o funcionário:</label>
-    <select id="funcionario" name="funcionario" required>
-        <option value="">Selecione</option>
-        <?php
-        foreach ($funcionarios as $funcionario) {
-            echo '<option value="' . $funcionario['idFuncionario'] . '">' . $funcionario['nome'] . '</option>';
-        }
-        ?>
-    </select>
+    <label for="funcionario">Funcionário:</label>
+    <input type="text" id="funcionario" name="funcionario" value="<?php echo htmlspecialchars($nomeFuncionario . ' - ' . $nomeDepartamento); ?>" readonly>
 
     <label for="dataFim">Data referente ao dia do cálculo:</label>
     <input type="date" id="dataFim" name="dataFim" required>
 
+    <input type="hidden" name="idFuncionario" value="<?php echo $idFuncionario; ?>">
     <input type="submit" value="Calcular PLR">
 </form>
 
 <?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Capturando o ID do funcionário selecionado
-    $idFuncionario = $_POST['funcionario'];
-
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['dataFim'])) {
     // Capturando a data de referência
     $dataFim = $_POST['dataFim'];
-
-    // Buscando os dados do funcionário selecionado
-    $sql = "SELECT nome, salario, dataAdmissao FROM funcionario WHERE idFuncionario = $idFuncionario";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        $funcionario = $result->fetch_assoc();
-        $salarioAtual = (float)$funcionario['salario'];
-        $dataInicio = $funcionario['dataAdmissao'];
-        $nomeFuncionario = $funcionario['nome'];
-    } else {
-        die("Funcionário não encontrado.");
-    }
 
     // Função para calcular a diferença em meses entre duas datas
     function calcularDiferencaMeses($dataInicio, $dataFim) {
         $data1 = new DateTime($dataInicio);
         $data2 = new DateTime($dataFim);
-
-        // Calculando a diferença entre as datas
         $intervalo = $data1->diff($data2);
-        
-        // Calculando a diferença total em meses
-        $totalMeses = ($intervalo->y * 12) + $intervalo->m;
-
-        return $totalMeses;
+        return ($intervalo->y * 12) + $intervalo->m;
     }
 
     // Função para calcular o PLR de acordo com os meses
     function calcularPlr($salario, $meses) {
-        if ($meses < 12) {
-            // Se os meses forem menos que 12, divide por 12 e multiplica por 65% do salário original
-            $benefício = ($meses / 12) * ($salario * 0.65);
-            return $salario + $benefício;
-        } else {
-            // Se for 12 meses ou mais, multiplica o salário por 1.65
-            return $salario * 1.65;
-        }
+        return $meses < 12 ? ($meses / 12) * ($salario * 0.65) + $salario : $salario * 1.65;
     }
 
     // Calcula a diferença em meses
