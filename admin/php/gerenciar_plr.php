@@ -15,6 +15,7 @@ if ($conn->connect_error) {
 
 // Verifica se o ID do funcionário foi passado por POST
 $idFuncionario = isset($_POST['idFuncionario']) ? intval($_POST['idFuncionario']) : 0;
+$idDepartamento = isset($_POST['idDepartamento']) ? intval($_POST['idDepartamento']) : 0;
 
 // Buscando os dados do funcionário
 $sql = "SELECT f.nome, f.salario, f.dataAdmissao, d.nomeDepartamento FROM funcionario f 
@@ -47,6 +48,13 @@ if ($result->num_rows > 0) {
 </head>
 <body>
 
+<nav class="voltar">
+    <form action="listaFuncionario.php" method="post" style="display: inline;">
+        <input type="hidden" name="idDepartamento" value="<?php echo $idDepartamento; ?>">
+        <button class="voltarBtn" type="submit">Voltar</button>
+    </form>
+</nav>
+
 <h2>Calcular PLR</h2>
 
 <form action="" method="post">
@@ -57,7 +65,8 @@ if ($result->num_rows > 0) {
     <input type="date" id="dataFim" name="dataFim" required>
 
     <input type="hidden" name="idFuncionario" value="<?php echo $idFuncionario; ?>">
-    <input type="submit" value="Calcular PLR">
+    <input type="hidden" name="idDepartamento" value="<?php echo $idDepartamento; ?>">
+    <button type="submit">Calcular PLR</button>
 </form>
 
 <?php

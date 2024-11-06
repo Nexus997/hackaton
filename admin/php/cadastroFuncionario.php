@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="../css/cadastro.css">
 </head>
 <body>
+<nav class="voltar">
+    <form action="listaFuncionario.php" method="post" style="display: inline;">
+        <input type="hidden" name="idDepartamento" value="<?php echo ($_POST['idDepartamento']); ?>">
+        <button class="voltarBtn" type="submit">Voltar</button>
+    </form>
+</nav>
+
     <h1>Cadastro de Funcionário</h1>
     <form method="POST" action="cadastrarFuncionario.php">
         <label for="nome">Nome:</label>
@@ -53,10 +60,10 @@
         <label for="contato">Contato:</label>
         <input type="text" id="contato" name="contato" required><br><br>
 
-        <label for="salario">Salário:</label>
+        <label for="salario">Salário (R$):</label>
         <input type="text" id="salario" name="salario" required><br><br>
 
-        <input type="submit" value="Cadastrar">
+        <button type="submit">Cadastrar Funcionário</button>
     </form>
 </body>
 </html>

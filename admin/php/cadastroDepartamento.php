@@ -9,12 +9,16 @@
     <link rel="stylesheet" href="../css/cadastro.css">
 </head>
 <body>
+<nav>
+    <a href="listaDepartamento.php">Voltar</a>
+</nav>
+
     <h1>Cadastro de Departamento</h1>
     <form method="POST" action="cadastrarDepartamento.php">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" required><br><br>
 
-        <input type="submit" value="Cadastrar">
+        <button type="submit">Cadastrar Departamento</button>
     </form>
 </body>
 </html>

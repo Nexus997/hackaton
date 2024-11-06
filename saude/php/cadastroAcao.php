@@ -16,17 +16,17 @@
     <form action="cadastrarAcao.php" method="post">
 
     <label for="nomeAcao">Nome da campanha:</label>
-    <input type="text" name="nomeAcao" id="nomeAcao" value="Vacinação Febre Amarela" required>
+    <input type="text" name="nomeAcao" id="nomeAcao"  required>
 
     <label for="dataAcao">Data da campanha:</label>
-    <input type="date" name="dataAcao" id="dataAcao" value="2024-10-17" required>
+    <input type="date" name="dataAcao" id="dataAcao"  required>
 
     <label for="local">Local:</label>
-    <input type="text" name="local" id="local" value = "ETEC Doutor Renato Cordeiro" required>
+    <input type="text" name="local" id="local"  required>
 
 
     <label for="tipoAcao">Tipo:</label>
-    <input type="text" name="tipoAcao" id="tipoAcao" value="Vacinação" required>
+    <input type="text" name="tipoAcao" id="tipoAcao"  required>
 
  
 

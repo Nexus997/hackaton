@@ -49,16 +49,18 @@ $result = mysqli_stmt_get_result($stmt);
                     <th>Idade</th>
                     <th>Departamento</th>
                     <th>Contato</th>
-                    <th>Salário</th>
+                    <th>Salário(R$)</th>
                     <th>Faltas</th>
                     <th>Folgas</th>
                     <th>PLR</th>
                 </tr>";
 
         while ($row = mysqli_fetch_assoc($result)) {
+
+            $dataFunc = date('d/m/Y', strtotime($row['dataNasc']));
             echo "<tr>
                     <td>{$row['nome']}</td>
-                    <td>{$row['dataNasc']}</td>
+                    <td>$dataFunc</td>
                     <td>{$row['idade']}</td>
                     <td>{$row['nomeDepartamento']}</td>
                     <td>{$row['contato']}</td>
@@ -71,14 +73,16 @@ $result = mysqli_stmt_get_result($stmt);
                         </form>
                     </td>
                     <td>
-                        <form action='gerenciar_folgas.php' method='post'>
+                        <form action='listaFolgas.php' method='post'>
                             <input type='hidden' name='idFuncionario' value='{$row['idFuncionario']}'>
+                            <input type='hidden' name='idDepartamento' value='{$row['idDepartamento']}'>
                             <button type='submit'>Folgas</button>
                         </form>
                     </td>
                     <td>
                         <form action='gerenciar_plr.php' method='post'>
                             <input type='hidden' name='idFuncionario' value='{$row['idFuncionario']}'>
+                            <input type='hidden' name='idDepartamento' value='{$row['idDepartamento']}'>
                             <button type='submit'>PLR</button>
                         </form>
                     </td>

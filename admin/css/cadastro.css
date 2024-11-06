@@ -101,3 +101,43 @@ nav a:hover {
     flex-direction: column;
     align-items: center;
 }
+
+.voltar {
+    width: 100%;
+    justify-content: center;
+    gap: 20px; /* Espaçamento entre os botões */
+    margin-bottom: 20px; /* Espaço entre a .voltaregação e o conteúdo */
+}
+
+/* Estilo dos links que parecem botões */
+.voltar a {
+    text-decoration: none; /* Remove o sublinhado */
+    color: white; /* Cor do texto */
+    background-color: #007bff; /* Cor de fundo (azul) */
+    padding: 10px 20px; /* Espaçamento interno */
+    border-radius: 5px; /* Bordas arredondadas */
+    transition: background-color 0.3s ease; /* Transição suave para hover */
+    font-weight: bold; /* Negrito para destacar */
+    display: inline-block; /* Para comportar o padding corretamente */
+}
+
+/* Efeito hover para os botões */
+.voltar a:hover {
+    background-color: #0056b3; /* Cor mais escura no hover */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}
+
+
+.voltarBtn {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: auto;
+}
+
+.voltarBtn:hover {
+    background-color: #218838;
+}
