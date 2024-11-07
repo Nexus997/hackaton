@@ -11,13 +11,28 @@ if ($idAcao === null) {
     header("Location: listaAcao.php");
     exit();
 }
+
+// Função para verificar se o valor está vazio e, se sim, retornar 'Indefinido'
+function definirIndefinido($valor) {
+    return empty($valor) ? 'Indefinido' : $valor;
+}
+
 // Função para censurar os dados
 function censurarDados($valor) {
-    if (strlen($valor) <= 4) {
-        return str_repeat('*', strlen($valor) - 1) . substr($valor, -1);
+    // Se o valor estiver vazio ou nulo, não faz nada
+    if (empty($valor)) {
+        return $valor;
     }
-    return substr($valor, 0, 3) . str_repeat('*', strlen($valor) - 4) . substr($valor, -1);
+
+    // Se a string tiver 4 ou menos caracteres, censura apenas os primeiros
+    if (strlen($valor) <= 4) {
+        return str_repeat('*', max(strlen($valor) - 1, 0)) . substr($valor, -1);
+    }
+
+    // Caso contrário, censura todos os caracteres, exceto os 3 primeiros e o último
+    return substr($valor, 0, 3) . str_repeat('*', max(strlen($valor) - 4, 0)) . substr($valor, -1);
 }
+
 
 // Consulta para buscar o nome da ação
 $sqlAcao = "SELECT nomeAcao FROM acoes WHERE idAcao = ?";
@@ -75,7 +90,8 @@ $result = mysqli_stmt_get_result($stmt);
 
     <!-- Filtro por gênero -->
     <select id="generoBusca" onchange="buscarPacientes()">
-        <option value="">Filtrar por gênero</option>
+        <option value="" disabled selected hidden>Filtrar por gênero</option>
+        <option value="" >Sem filtro</option>
         <option value="M">Masculino</option>
         <option value="F">Feminino</option>
     </select>
@@ -83,6 +99,7 @@ $result = mysqli_stmt_get_result($stmt);
     <!-- Filtro por faixa etária -->
     <select id="idadeBusca" onchange="buscarPacientes()">
         <option value="" disabled selected hidden>Filtrar por faixa etária</option>
+        <option value="" >Sem filtro</option>
         <option value="menor18">Menor de 18</option>
         <option value="18-25">18 - 25</option>
         <option value="26-40">26 - 40</option>
@@ -92,7 +109,8 @@ $result = mysqli_stmt_get_result($stmt);
 
     <!-- Filtro por status trabalhista -->
     <select id="statusBusca" onchange="buscarPacientes()">
-        <option value="">Filtrar por status trabalhista</option>
+        <option value="" disabled selected hidden>Filtrar por status trabalhista</option>
+        <option value="" >Sem filtro</option>
         <option value="empregado">Empregado</option>
         <option value="autonomo">Autônomo</option>
         <option value="desempregado">Desempregado</option>
@@ -109,57 +127,78 @@ $result = mysqli_stmt_get_result($stmt);
 
 <div id="resultados">
     <?php
-    if (mysqli_num_rows($result) > 0) {
-        echo "<table border='1'>
-                <tr>
-                    <th>Nome</th>
-                    <th>Data de Nascimento</th>
-                    <th>Idade</th>
-                    <th>Bairro</th>
-                    <th>Gênero</th>
-                    <th>Status Trabalhista</th>
-                    <th>Contato</th>
-                    <th>Documento</th>
-                    <th>Observações</th>
-                    <th>Atendimento</th>
-                </tr>";
+   if (mysqli_num_rows($result) > 0) {
+    echo "<table border='1'>
+            <tr>
+                <th>Nome</th>
+                <th>Data de Nascimento</th>
+                <th>Idade</th>
+                <th>Bairro</th>
+                <th>Gênero</th>
+                <th>Status Trabalhista</th>
+                <th>Contato <button id='btn-contato' onclick='toggleCensuraPorColuna(\"contato\")'>Mostrar</button></th>
+                <th>Documento <button id='btn-documento' onclick='toggleCensuraPorColuna(\"documento\")'>Mostrar</button></th>
+                <th>Observações</th>
+                <th>Atendimento</th>
+            </tr>";
 
-        while ($row = mysqli_fetch_assoc($result)) {
-            // Verifica e formata o gênero
-            $genero = $row['generoPaciente'] === 'M' ? 'Masculino' : 'Feminino';
-            
-            // Formata o status trabalhista
-            $statusTrabalhista = !empty($row['statusTrabalho']) ? $row['statusTrabalho'] : 'Não especificado';
-
-            // Censura os campos de contato e documento
-            $contatoCensurado = censurarDados($row['contatoPaciente']);
-            $documentoCensurado = censurarDados($row['documentoPaciente']);
-            $dataPaciente = date('d/m/Y', strtotime($row['dataNasc']));
-
-            echo "<tr>
-                    <td>{$row['nomePaciente']}</td>
-                    <td>{$dataPaciente}</td>
-                    <td>{$row['idade']}</td>
-                    <td>{$row['bairro']}</td>
-                    <td>$genero</td>
-                    <td>$statusTrabalhista</td>
-                    <td>$contatoCensurado</td>
-                    <td>$documentoCensurado</td>
-                    <td>{$row['observacaoPaciente']}</td>
-                    <td>
-                        <form action='atendimento.php' method='post'>
-                             <input type='hidden' name='idAcao' value='{$row['idAcao']}'>
-                            <input type='hidden' name='idPaciente' value='{$row['idPaciente']}'>
-                            <button type='submit'>Atender</button>
-                        </form>
-                    </td>
-                  </tr>";
+    // Loop para mostrar os dados
+    while ($row = mysqli_fetch_assoc($result)) {
+        // Verifica e formata o gênero conforme as novas regras
+        if ($row['generoPaciente'] === 'M') {
+            $genero = 'Masculino';
+        } elseif ($row['generoPaciente'] === 'F') {
+            $genero = 'Feminino';
+        } else {
+            $genero = 'Não especificado';
         }
-        echo "</table>";
-    } else {
-        echo "Nenhum paciente encontrado.";
+
+        // Verifica e define o status trabalhista
+        $statusTrabalhista = empty($row['statusTrabalho']) ? 'Indefinido' : $row['statusTrabalho'];
+
+        // Censura os campos de contato e documento se não forem 'Indefinido'
+        $contatoPaciente = empty($row['contatoPaciente']) ? 'Indefinido' : $row['contatoPaciente'];
+        $documentoPaciente = empty($row['documentoPaciente']) ? 'Indefinido' : $row['documentoPaciente'];
+        $contatoCensurado = censurarDados($contatoPaciente);
+        $documentoCensurado = censurarDados($documentoPaciente);
+
+        // Verifica e define a data de nascimento
+        $dataPaciente = $row['dataNasc'] ? date('d/m/Y', strtotime($row['dataNasc'])) : 'Indefinido';
+
+        // A idade agora é obtida diretamente do banco e se for null, será "Indefinido"
+        $idade = !empty($row['idade']) ? $row['idade'] : 'Indefinido';
+
+        // Verifica e define o bairro
+        $bairro = empty($row['bairro']) ? 'Indefinido' : $row['bairro'];
+
+        // Verifica e define as observações
+        $observacoesPaciente = empty($row['observacaoPaciente']) ? 'Indefinido' : $row['observacaoPaciente'];
+
+        // Exibe a linha da tabela
+        echo "<tr>
+                <td>{$row['nomePaciente']}</td>
+                <td>{$dataPaciente}</td>
+                <td>{$idade}</td>
+                <td>{$bairro}</td>
+                <td>{$genero}</td>
+                <td>{$statusTrabalhista}</td>
+                <td class='contato-col' data-original='{$contatoPaciente}'>{$contatoCensurado}</td>
+                <td class='documento-col' data-original='{$documentoPaciente}'>{$documentoCensurado}</td>
+                <td>{$observacoesPaciente}</td>
+                <td>
+                    <form action='atendimento.php' method='post'>
+                         <input type='hidden' name='idAcao' value='{$row['idAcao']}'>
+                        <input type='hidden' name='idPaciente' value='{$row['idPaciente']}'>
+                        <button type='submit'>Atender</button>
+                    </form>
+                </td>
+              </tr>";
     }
 
+    echo "</table>";
+} else {
+    echo "Nenhum paciente encontrado.";
+}
     mysqli_close($conn);
     ?>
 </div>
@@ -186,6 +225,49 @@ $result = mysqli_stmt_get_result($stmt);
                 $("#resultados").html(response);
             }
         });
+    }
+
+    function toggleCensuraPorColuna(coluna) {
+    var cells = document.querySelectorAll(`.${coluna}-col`); // Seleciona todas as células da coluna
+    var button = document.querySelector(`#btn-${coluna}`); // Seleciona o botão da coluna
+
+    cells.forEach(function(cell) {
+        var originalValue = cell.dataset.original; // Pega o valor original (não censurado)
+        var currentText = cell.innerText.trim(); // Pega o texto visível atualmente
+
+        // Se o valor atual estiver censurado, exibe o valor original
+        if (currentText.includes('*')) {
+            cell.innerHTML = originalValue;
+            
+        } else {
+            // Caso contrário, censura o valor
+            var censoredValue = censurarDados(originalValue);
+            cell.innerHTML = censoredValue;
+        }
+    });
+
+    // Alterna o texto do botão entre "Mostrar" e "Ocultar"
+    if (button.innerText === "Mostrar") {
+        button.innerText = "Ocultar";
+    } else {
+        button.innerText = "Mostrar";
+    }
+}
+
+    // Função para censurar os dados
+    function censurarDados(valor) {
+        if (valor === 'Indefinido') {
+            return valor; // Não censura 'Indefinido'
+        }
+        if (valor.length <= 4) {
+            return str_repeat('*', valor.length - 1) + valor.slice(-1);
+        }
+        return valor.slice(0, 3) + str_repeat('*', valor.length - 4) + valor.slice(-1);
+    }
+
+    // Função auxiliar para repetir o caractere
+    function str_repeat(char, times) {
+        return new Array(times + 1).join(char);
     }
 </script>
 

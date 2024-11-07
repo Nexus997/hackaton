@@ -36,7 +36,8 @@ if ($idFuncionario) {
 <head>
     <meta charset="UTF-8">
     <title>Lista de Faltas</title>
-    <link rel="stylesheet" href="../css/lista.css"> <!-- Link para o CSS externo -->
+    <link rel="stylesheet" href="../css/lista.css"> 
+    <link rel="icon" href="../img/Admin+logo.png" type="image/x-icon"><!-- Link para o CSS externo -->
 </head>
 
 <body>

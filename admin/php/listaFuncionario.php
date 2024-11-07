@@ -6,6 +6,12 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro 
 
 // Verifica se idDepartamento foi passado via POST
 $idDepartamento = isset($_POST['idDepartamento']) ? intval($_POST['idDepartamento']) : 0;
+$sqlDepartamento = "SELECT nomeDepartamento FROM departamento WHERE idDepartamento = ?";
+$stmtDepartamento = mysqli_prepare($conn, $sqlDepartamento);
+mysqli_stmt_bind_param($stmtDepartamento, 'i', $idDepartamento);
+mysqli_stmt_execute($stmtDepartamento);
+$resultDepartamento = mysqli_stmt_get_result($stmtDepartamento);
+$departamento = mysqli_fetch_assoc($resultDepartamento);
 
 // Consulta para buscar todos os funcionários do departamento específico e contar as faltas
 $sql = "SELECT f.*, d.nomeDepartamento, 
@@ -25,6 +31,7 @@ $result = mysqli_stmt_get_result($stmt);
     <meta charset="UTF-8">
     <title>Lista de Funcionários</title>
     <link rel="stylesheet" href="../css/lista.css">
+    <link rel="icon" href="../img/Admin+logo.png" type="image/x-icon">
 </head>
 
 <body>
@@ -32,7 +39,7 @@ $result = mysqli_stmt_get_result($stmt);
     <a href="listaDepartamento.php">Voltar</a>
 </nav>
 
-<h1>Lista de Funcionários</h1>
+<h1>Lista de Funcionários - <?php echo htmlspecialchars($departamento['nomeDepartamento']); ?></h1>
 
 <form id="cadastroFuncionarioForm" action="cadastroFuncionario.php" method="post" style="display: inline;">
     <input type='hidden' name='idDepartamento' value="<?php echo $idDepartamento; ?>">
@@ -45,7 +52,7 @@ $result = mysqli_stmt_get_result($stmt);
         echo "<table border='1'>
                 <tr>
                     <th>Nome</th>
-                    <th>Data de Nascimento</th>
+                    <th>Data de Admissão</th>
                     <th>Idade</th>
                     <th>Departamento</th>
                     <th>Contato</th>
@@ -57,7 +64,7 @@ $result = mysqli_stmt_get_result($stmt);
 
         while ($row = mysqli_fetch_assoc($result)) {
 
-            $dataFunc = date('d/m/Y', strtotime($row['dataNasc']));
+            $dataFunc = date('d/m/Y', strtotime($row['dataAdmissao']));
             echo "<tr>
                     <td>{$row['nome']}</td>
                     <td>$dataFunc</td>

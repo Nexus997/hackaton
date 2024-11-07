@@ -5,6 +5,7 @@ $conn = mysqli_connect($servername, $username, $password, $dbname) or die('Erro 
 
 // Recebe os dados do formulário
 $idFuncionario = $_POST['idFuncionario'];
+$idDepartamento = $_POST['idDepartamento'];
 $dataFalta = $_POST['dataFalta'];
 $motivo = $_POST['motivo'];
 
@@ -17,6 +18,7 @@ if (mysqli_stmt_execute($stmt)) {
     // Redireciona para a página de listagem com o idFuncionario via POST
     echo '<form id="redirectForm" action="listaFaltas.php" method="post">
             <input type="hidden" name="idFuncionario" value="' . $idFuncionario . '">
+            <input type="hidden" name="idDepartamento" value="' . $idDepartamento . '">
           </form>';
     echo '<script>document.getElementById("redirectForm").submit();</script>';
     exit();

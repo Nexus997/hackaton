@@ -8,32 +8,38 @@
     <link rel="icon" href="../img/logo atend+.png" type="image/x-icon">
 </head>
 <body>
-
-<nav>
-    <a href="listaAcao.php">Voltar</a>
+<nav class="voltar">
+    <form action="listaPaciente.php" method="post" style="display: inline;">
+        <input type="hidden" name="idAcao" value="<?php echo ($_POST['idAcao']); ?>">
+        
+        <button class="voltarBtn" type="submit">Voltar</button>
+    </form>
 </nav>
 
     <h1>Cadastro de Paciente</h1>
     <form action="cadastrarPaciente.php" method="post">
 
-    <label for="nomePaciente">Nome do paciente:</label>
-    <input type="text" name="nomePaciente" id="nomePaciente" value="Gustavo Felipe" required>
+    <label for="nomePaciente">*Nome do paciente:</label>
+    <input type="text" name="nomePaciente" id="nomePaciente" placeholder="Insira o nome do paciente" required>
+
+    <label for="documentoPaciente">*Documento (RG ou SUS):</label>
+    <input type="text" name="documentoPaciente" id="documentoPaciente" maxlength="15" required>
 
     <label for="dataNasc">Data de nascimento:</label>
-    <input type="date" name="dataNasc" id="dataNasc" value="2004-11-15" required>
+    <input type="date" name="dataNasc" id="dataNasc" >
 
     <label for="bairro">Bairro:</label>
-    <input type="text" name="bairro" id="bairro" value ="Bairro Três" required>
+    <input type="text" name="bairro" id="bairro" placeholder="Insira o bairro do paciente">
 
     <label for="generoPaciente">Gênero do paciente:</label>
-    <select name="generoPaciente" id="generoPaciente" required>
+    <select name="generoPaciente" id="generoPaciente" >
         <option value="" disabled selected hidden>Selecione o gênero do paciente</option>
         <option value="M">Masculino</option>
         <option value="F">Feminino</option>
     </select>
 
     <label for="statusTrabalhista">Situação trabalhista:</label>
-    <select name="statusTrabalhista" id="statusTrabalhista" required>
+    <select name="statusTrabalhista" id="statusTrabalhista" >
         <option value="" disabled selected hidden>Selecione a situação trabalhista</option>
         <option value="Empregado">Empregado</option>
         <option value="Autônomo">Autônomo</option>
@@ -45,11 +51,10 @@
     </select>
 
     <label for="contatoPaciente">Contato:</label>
-    <input type="text" name="contatoPaciente" id="contatoPaciente" value ="(12) 34578-9999" required maxlength=
+    <input type="text" name="contatoPaciente" id="contatoPaciente"   maxlength=
     "17">
 
-    <label for="documentoPaciente">Documento (RG ou SUS):</label>
-    <input type="text" name="documentoPaciente" id="documentoPaciente" maxlength="15" required> 
+     
 
     <label for="observacoesPaciente">Observações do paciente</label>
 

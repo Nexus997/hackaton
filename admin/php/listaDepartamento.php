@@ -19,13 +19,17 @@ $result = mysqli_stmt_get_result($stmt);
 <head>
     <meta charset="UTF-8">
     <title>Lista de Departamentos</title>
+    <link rel="icon" href="../img/Admin+logo.png" type="image/x-icon">
     <br>
     
     <link rel="stylesheet" href="../css/lista.css"> <!-- Link para o CSS externo -->
 </head>
 
 <body>
-
+<div class="logo">
+    <img src="../img/Admin+logo.png">
+    <img src="../img/Admin+.png">
+</div>
 
 <h1>Lista de Departamentos</h1>
 <form id="cadastroDepartamentoForm" action="cadastroDepartamento.php" method="post" style="display: inline;">

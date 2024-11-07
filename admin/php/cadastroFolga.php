@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Folgas</title>
     <link rel="stylesheet" href="../css/cadastro.css">  
+    <link rel="icon" href="../img/Admin+logo.png" type="image/x-icon">
 </head>
 <body>
 <nav class="voltar">
@@ -56,6 +57,7 @@
 
     <form method="POST" action="cadastrarFolga.php">
         <input type="hidden" name="idFuncionario" value="<?php echo $idFuncionario; ?>">
+        <input type="hidden" name="idDepartamento" value="<?php echo $idDepartamento; ?>">
 
         <label for="dataFolga">Data da Folga:</label>
         <input type="date" id="dataFolga" name="dataFolga" value="<?php echo date('Y-m-d'); ?>" required><br><br>

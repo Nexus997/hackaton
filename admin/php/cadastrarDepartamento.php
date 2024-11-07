@@ -16,16 +16,18 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST['nome'];
    
-
     // Inserir no banco de dados
-    $sql = "INSERT INTO departamento (nomeDepartamento) 
-            VALUES ('$nome')";
+    $sql = "INSERT INTO departamento (nomeDepartamento) VALUES ('$nome')";
 
     if ($conn->query($sql) === TRUE) {
+        // Recupera o ID do departamento recém inserido
+        $idDepartamento = $conn->insert_id;
+
+        // Faz o redirecionamento
         echo "<form id='redirectForm' action='listaFuncionario.php' method='post'>
-        <input type='hidden' name='idDepartamento' value='" . htmlspecialchars($idDepartamento) . "'>
-      </form>";
-echo "<script>document.getElementById('redirectForm').submit();</script>";
+                <input type='hidden' name='idDepartamento' value='" . htmlspecialchars($idDepartamento, ENT_QUOTES, 'UTF-8') . "'>
+              </form>";
+        echo "<script>document.getElementById('redirectForm').submit();</script>";
     } else {
         echo "Erro: " . $sql . "<br>" . $conn->error;
     }

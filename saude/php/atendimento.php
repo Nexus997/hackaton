@@ -8,8 +8,12 @@
     <link rel="icon" href="../img/logo atend+.png" type="image/x-icon">
 </head>
 <body>
-<nav>
-    <a href="listaAcao.php">Voltar</a>
+<nav class="voltar">
+    <form action="listaPaciente.php" method="post" style="display: inline;">
+        <input type="hidden" name="idAcao" value="<?php echo ($_POST['idAcao']); ?>">
+        
+        <button class="voltarBtn" type="submit">Voltar</button>
+    </form>
 </nav>
 <h1>Atendimento</h1>
 <?php

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,23 +26,30 @@ if ($idAcao === null) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Captura os dados do formulário
     $nomePaciente = $_POST['nomePaciente'];
-    $dataNasc = $_POST['dataNasc'];
+    $dataNasc = !empty($_POST['dataNasc']) ? $_POST['dataNasc'] : null;
     $bairro = $_POST['bairro'];
-    $generoPaciente = $_POST['generoPaciente'];
-    $statusTrabalhista = $_POST['statusTrabalhista'];
+    $generoPaciente = !empty($_POST['generoPaciente']) ? $_POST['generoPaciente'] : null;
+    $statusTrabalhista = !empty($_POST['statusTrabalhista']) ? $_POST['statusTrabalhista'] : null;
     $contatoPaciente = $_POST['contatoPaciente'];
     $documentoPaciente = $_POST['documentoPaciente'];
     $observacoesPaciente = $_POST['observacoesPaciente'];
 
+    // Função para calcular a idade com base na data de nascimento
     function calcularIdade($dataNascimento) {
-        $dataNascimento = new DateTime($dataNascimento);
-        $hoje = new DateTime();
-        return $hoje->diff($dataNascimento)->y;
+        if ($dataNascimento) {
+            $dataNascimento = new DateTime($dataNascimento);
+            $hoje = new DateTime();
+            return $hoje->diff($dataNascimento)->y;
+        }
+        return null;  // Se a data não foi fornecida, idade será NULL
     }
 
+    // Calcular a idade apenas se a data de nascimento for informada
     $idade = calcularIdade($dataNasc);
 
+    // Inserção no banco de dados
     $sql = "INSERT INTO paciente (
         nomePaciente, 
         dataNasc, 
@@ -58,11 +65,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )";
 
+    // Preparando a consulta
     $stmt = mysqli_prepare($conn, $sql);
     mysqli_stmt_bind_param($stmt, 'sssssssssi', $nomePaciente, $dataNasc, $idade, $bairro, $generoPaciente, $statusTrabalhista, $contatoPaciente, $documentoPaciente, $observacoesPaciente, $idAcao);
 
+    // Executando a consulta
     if (mysqli_stmt_execute($stmt)) {
-        // Redireciona para listaPaciente.php com idAcao
+        // Redirecionando para listaPaciente.php com idAcao
         echo "<form id='redirectForm' action='listaPaciente.php' method='post' style='display: none;'>
                 <input type='hidden' name='idAcao' value='" . htmlspecialchars($idAcao) . "'>
               </form>
@@ -74,10 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Erro ao cadastrar paciente: " . mysqli_error($conn);
     }
 
+    // Fechar a consulta
     mysqli_stmt_close($stmt);
 }
 
-// Fecha a conexão
+// Fechar a conexão
 $conn->close();
 ?>
 

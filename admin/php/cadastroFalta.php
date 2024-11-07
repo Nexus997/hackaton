@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Faltas</title>
     <link rel="stylesheet" href="../css/cadastro.css">  
+    <link rel="icon" href="../img/Admin+logo.png" type="image/x-icon">
 </head>
 <body>
 <nav class="voltar">

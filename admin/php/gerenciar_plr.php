@@ -44,6 +44,7 @@ if ($result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calcular PLR</title>
     <link rel="stylesheet" href="../css/cadastro.css">
+    <link rel="icon" href="../img/Admin+logo.png" type="image/x-icon">
     
 </head>
 <body>
@@ -59,10 +60,10 @@ if ($result->num_rows > 0) {
 
 <form action="" method="post">
     <label for="funcionario">Funcionário:</label>
-    <input type="text" id="funcionario" name="funcionario" value="<?php echo htmlspecialchars($nomeFuncionario . ' - ' . $nomeDepartamento); ?>" readonly>
+    <input type="text" id="funcionario" name="funcionario" style= "width: 300px;"value="<?php echo htmlspecialchars($nomeFuncionario . ' - ' . $nomeDepartamento); ?>" readonly>
 
     <label for="dataFim">Data referente ao dia do cálculo:</label>
-    <input type="date" id="dataFim" name="dataFim" required>
+    <input type="date" id="dataFim" name="dataFim" required style= "width: 100px;">
 
     <input type="hidden" name="idFuncionario" value="<?php echo $idFuncionario; ?>">
     <input type="hidden" name="idDepartamento" value="<?php echo $idDepartamento; ?>">
